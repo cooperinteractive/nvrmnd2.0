@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NVRMND — Investor Access</title>
+  <meta name="description" content="NVRMND Investor Portal. Explore the opportunity." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://ufudkovmqcwmmxzjdjqy.supabase.co https://hooks.slack.com; img-src 'self' data:;">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-black: #0A0A0A;
+      --bg-warm: #1A1614;
+      --bg-dark-warm: #12100E;
+      --surface: #141210;
+      --accent-warm: #C4946A;
+      --accent-gold: #D4A574;
+      --accent-cool: #7BA7BC;
+      --text-primary: #F5F0EB;
+      --text-secondary: #8A8279;
+      --text-muted: #5C5650;
+      --border-subtle: rgba(196, 148, 106, 0.12);
+      --border-light: rgba(138, 130, 121, 0.15);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(196, 148, 106, 0.3) transparent;
+    }
+
+    body {
+      background: var(--bg-black);
+      color: var(--text-primary);
+      font-family: var(--serif);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+
+    /* ═══════════ NAVBAR ═══════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, transparent 100%);
+      transition: background 0.4s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      opacity: 0.7;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-back {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-back:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-logout {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: none;
+      border: 1px solid rgba(138, 130, 121, 0.2);
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: none;
+    }
+
+    .nav-logout:hover {
+      color: var(--text-primary);
+      border-color: rgba(138, 130, 121, 0.4);
+    }
+
+
+    /* ═══════════ PAGE GLOW ═══════════ */
+    .page-glow {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(196, 148, 106, 0.06) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+
+    /* ═══════════ ACCESS GATE ═══════════ */
+    .access-view {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .access-panel {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .panel-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .panel-heading {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: 48px;
+      line-height: 1.3;
+    }
+
+    .access-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 16px 20px;
+      min-height: 48px;
+      background: transparent;
+      border: 1px solid rgba(138, 130, 121, 0.25);
+      border-radius: 0;
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      -webkit-appearance: none;
+    }
+
+    .form-input.code-input {
+      font-size: 1.1rem;
+      letter-spacing: 0.3em;
+      text-align: center;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--text-muted);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+    }
+
+    .form-input.code-input::placeholder {
+      letter-spacing: 0.2em;
+      font-size: 0.95rem;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--accent-warm);
+      box-shadow: 0 0 20px rgba(196, 148, 106, 0.08);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px 20px;
+      min-height: 48px;
+      background: var(--accent-gold);
+      border: none;
+      color: var(--bg-black);
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background: #DEB78E;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .form-message {
+      text-align: center;
+      padding: 12px 16px;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 400;
+      line-height: 1.6;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .form-message.show {
+      display: block;
+    }
+
+    .form-message.error {
+      color: #BC7B7B;
+    }
+
+    .form-message.success {
+      color: #7BBC8F;
+    }
+
+    .input-error {
+      border-color: #BC7B7B !important;
+      box-shadow: 0 0 15px rgba(188, 123, 123, 0.1) !important;
+    }
+
+    /* Divider */
+    .gate-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    .gate-divider-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(138, 130, 121, 0.15);
+    }
+
+    .gate-divider-text {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Request Access Toggle */
+    .request-toggle {
+      width: 100%;
+      padding: 14px 20px;
+      background: transparent;
+      border: 1px solid rgba(138, 130, 121, 0.2);
+      color: var(--text-secondary);
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .request-toggle:hover {
+      color: var(--text-primary);
+      border-color: rgba(138, 130, 121, 0.4);
+    }
+
+    /* Request Access Form */
+    .request-form {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .request-form.active {
+      display: flex;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row .form-input {
+      flex: 1;
+    }
+
+
+    /* ═══════════ DECK (behind gate) ═══════════ */
+    .deck-view {
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .deck-view.active {
+      display: block;
+    }
+
+    /* Shared deck section styling */
+    .deck-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .deck-section:nth-child(even) {
+      background: var(--bg-dark-warm);
+    }
+
+    .deck-inner {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .deck-label {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .deck-heading {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .deck-subheading {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 600px;
+    }
+
+
+    /* ═══════════ DECK HERO ═══════════ */
+    .deck-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+    }
+
+    .deck-hero-logo {
+      font-family: var(--sans);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .deck-hero-tagline {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--accent-warm);
+      margin-bottom: 48px;
+    }
+
+    .deck-hero-desc {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 64px;
+    }
+
+    .deck-hero-stats {
+      display: flex;
+      gap: 48px;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      color: var(--accent-warm);
+      margin-bottom: 4px;
+    }
+
+    .hero-stat-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+
+    /* ═══════════ MARKET SECTION ═══════════ */
+    .market-numbers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(138, 130, 121, 0.08);
+      margin-top: 48px;
+      margin-bottom: 48px;
+    }
+
+    .market-number {
+      background: var(--bg-black);
+      padding: 40px 28px;
+      text-align: center;
+    }
+
+    .market-value {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--accent-warm);
+      margin-bottom: 4px;
+    }
+
+    .market-value .counter {
+      display: inline;
+    }
+
+    .market-unit {
+      font-size: 0.6em;
+      color: var(--accent-gold);
+      font-family: var(--sans);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .market-desc {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Trend chart */
+    .trend-chart {
+      position: relative;
+      width: 100%;
+      padding: 40px 0 20px;
+      margin-top: 16px;
+    }
+
+    .trend-chart svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .trend-line {
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .trend-line.cold-plunge {
+      stroke: var(--text-secondary);
+    }
+
+    .trend-line.breathwork {
+      stroke: var(--accent-gold);
+    }
+
+    .trend-line.sauna {
+      stroke: var(--text-primary);
+    }
+
+    .trend-line.immersive {
+      stroke: var(--accent-warm);
+    }
+
+    .trend-legend {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .trend-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+
+    .trend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+
+    /* ═══════════ PROBLEM SECTION ═══════════ */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .problem-card {
+      padding: 32px;
+      border: 1px solid rgba(138, 130, 121, 0.08);
+      position: relative;
+    }
+
+    .problem-card::before {
+      content: attr(data-num);
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: rgba(196, 148, 106, 0.08);
+      line-height: 1;
+    }
+
+    .problem-card-title {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--accent-warm);
+      margin-bottom: 8px;
+    }
+
+    .problem-card-desc {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+
+    /* ═══════════ SOLUTION SECTION ═══════════ */
+    .solution-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .solution-feature {
+      padding: 32px 24px;
+      border: 1px solid rgba(138, 130, 121, 0.08);
+      text-align: center;
+      transition: border-color 0.4s ease, background 0.4s ease;
+    }
+
+    .solution-feature:hover {
+      border-color: rgba(196, 148, 106, 0.2);
+      background: rgba(196, 148, 106, 0.03);
+    }
+
+    .solution-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: block;
+      opacity: 0.8;
+    }
+
+    .solution-title {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: 0.03em;
+    }
+
+    .solution-desc {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+
+    /* ═══════════ FINANCIALS SECTION ═══════════ */
+    .fin-scenarios {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .fin-scenario {
+      padding: 32px;
+      border: 1px solid rgba(138, 130, 121, 0.08);
+    }
+
+    .fin-scenario.target {
+      border-color: rgba(196, 148, 106, 0.2);
+      background: rgba(196, 148, 106, 0.03);
+    }
+
+    .fin-scenario-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .fin-fill-rate {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--accent-warm);
+      margin-bottom: 24px;
+    }
+
+    .fin-fill-rate span {
+      font-size: 0.5em;
+      color: var(--text-muted);
+      font-family: var(--sans);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+    }
+
+    .fin-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(138, 130, 121, 0.06);
+    }
+
+    .fin-row:last-child {
+      border-bottom: none;
+    }
+
+    .fin-row-label {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .fin-row-value {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .fin-row.highlight .fin-row-label {
+      color: var(--accent-warm);
+      font-weight: 500;
+    }
+
+    .fin-row.highlight .fin-row-value {
+      color: var(--accent-warm);
+      font-size: 1rem;
+    }
+
+    /* Animated bar */
+    .fin-bar-wrap {
+      margin-top: 20px;
+    }
+
+    .fin-bar-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .fin-bar-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(138, 130, 121, 0.1);
+      overflow: hidden;
+    }
+
+    .fin-bar-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold));
+      transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+
+    /* ═══════════ INVESTMENT SECTION ═══════════ */
+    .invest-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(138, 130, 121, 0.08);
+      margin-top: 48px;
+    }
+
+    .invest-card {
+      background: var(--bg-dark-warm);
+      padding: 36px 28px;
+    }
+
+    .invest-card-value {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--accent-warm);
+      margin-bottom: 4px;
+    }
+
+    .invest-card-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+
+    /* ═══════════ TEAM SECTION ═══════════ */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .team-card {
+      text-align: center;
+    }
+
+    .team-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(196, 148, 106, 0.25);
+      background: rgba(196, 148, 106, 0.05);
+    }
+
+    .team-initials {
+      font-family: var(--sans);
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--accent-warm);
+    }
+
+    .team-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .team-role {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+
+    .team-partners {
+      margin-top: 32px;
+      padding: 24px;
+      border: 1px solid rgba(138, 130, 121, 0.06);
+    }
+
+    .team-partners-label {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .team-partners-list {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+
+    /* ═══════════ TIMELINE SECTION ═══════════ */
+    .timeline {
+      position: relative;
+      margin-top: 64px;
+      padding-left: 40px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(138, 130, 121, 0.15);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 48px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -33px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-warm);
+      background: var(--bg-black);
+    }
+
+    .timeline-item.active .timeline-dot {
+      background: var(--accent-warm);
+    }
+
+    .timeline-phase {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-warm);
+      margin-bottom: 4px;
+    }
+
+    .timeline-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .timeline-desc {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 500px;
+    }
+
+
+    /* ═══════════ DOWNLOADS SECTION ═══════════ */
+    .download-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .download-card {
+      padding: 28px 24px;
+      border: 1px solid rgba(138, 130, 121, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .download-card:hover {
+      border-color: rgba(196, 148, 106, 0.25);
+      background: rgba(196, 148, 106, 0.03);
+    }
+
+    .download-icon {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-warm);
+      padding: 4px 10px;
+      border: 1px solid rgba(196, 148, 106, 0.2);
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .download-title {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .download-meta {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+
+    /* ═══════════ COMPETITIVE SECTION ═══════════ */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 48px;
+    }
+
+    .comp-table th,
+    .comp-table td {
+      padding: 14px 20px;
+      text-align: center;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      border-bottom: 1px solid rgba(138, 130, 121, 0.08);
+    }
+
+    .comp-table th {
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.65rem;
+    }
+
+    .comp-table th:last-child {
+      color: var(--accent-warm);
+    }
+
+    .comp-table td:first-child {
+      text-align: left;
+      color: var(--text-secondary);
+    }
+
+    .comp-table td {
+      color: var(--text-muted);
+    }
+
+    .comp-check {
+      color: var(--accent-warm);
+      font-size: 1rem;
+    }
+
+    .comp-table td:last-child {
+      background: rgba(196, 148, 106, 0.03);
+    }
+
+
+    /* ═══════════ CTA / CONTACT ═══════════ */
+    .deck-cta {
+      text-align: center;
+      padding: 120px 40px;
+      position: relative;
+    }
+
+    .deck-cta .deck-heading {
+      margin-bottom: 16px;
+    }
+
+    .deck-cta-email {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--accent-warm);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      padding: 14px 36px;
+      border: 1px solid rgba(196, 148, 106, 0.3);
+      transition: all 0.3s ease;
+      margin-top: 32px;
+    }
+
+    .deck-cta-email:hover {
+      background: rgba(196, 148, 106, 0.08);
+      border-color: var(--accent-warm);
+    }
+
+    .deck-cta-note {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 24px;
+      letter-spacing: 0.03em;
+    }
+
+
+    /* ═══════════ FOOTER ═══════════ */
+    .page-footer {
+      text-align: center;
+      padding: 48px 24px 24px;
+      border-top: 1px solid rgba(138, 130, 121, 0.06);
+    }
+
+    .page-footer span {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+
+    /* ═══════════ SCROLL PROGRESS ═══════════ */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold));
+      z-index: 1001;
+      transition: width 0.1s linear;
+    }
+
+
+    /* ═══════════ REVEAL ANIMATIONS ═══════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.1s !important;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s !important;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s !important;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: 0.4s !important;
+    }
+
+    .reveal-delay-5 {
+      transition-delay: 0.5s !important;
+    }
+
+
+    /* ═══════════ RESPONSIVE ═══════════ */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 16px 20px;
+      }
+
+      .deck-section {
+        padding: 80px 20px 60px;
+      }
+
+      .deck-hero {
+        padding: 100px 20px 60px;
+      }
+
+      .deck-hero-stats {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .market-numbers {
+        grid-template-columns: 1fr;
+      }
+
+      .problem-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .solution-features {
+        grid-template-columns: 1fr;
+      }
+
+      .fin-scenarios {
+        grid-template-columns: 1fr;
+      }
+
+      .invest-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .download-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .trend-legend {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .comp-table {
+        font-size: 0.65rem;
+      }
+
+      .comp-table th,
+      .comp-table td {
+        padding: 10px 8px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo">NVRMND</a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-back">&larr; Back to NVRMND</a>
+      <button class="nav-logout" id="logoutBtn">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="page-glow"></div>
+
+
+  <!-- ═══════════ ACCESS GATE ═══════════ -->
+  <div class="access-view" id="accessView">
+    <div class="access-panel">
+      <div class="panel-label">Investor Portal</div>
+      <h1 class="panel-heading">Enter Access Code</h1>
+      <div class="access-form">
+        <input type="password" class="form-input code-input" id="accessCode" placeholder="Access code"
+          autocomplete="off" spellcheck="false" maxlength="10" />
+        <button type="button" class="btn-primary" id="accessBtn">Enter</button>
+      </div>
+      <div class="form-message" id="accessMessage"></div>
+
+      <div class="gate-divider">
+        <div class="gate-divider-line"></div>
+        <span class="gate-divider-text">or</span>
+        <div class="gate-divider-line"></div>
+      </div>
+
+      <button type="button" class="request-toggle" id="requestToggle">Request Access</button>
+
+      <div class="request-form" id="requestForm">
+        <div class="form-row">
+          <input type="text" class="form-input" id="reqName" placeholder="Full name" />
+          <input type="email" class="form-input" id="reqEmail" placeholder="Email" />
+        </div>
+        <div class="form-row">
+          <input type="text" class="form-input" id="reqCompany" placeholder="Company / Fund (optional)" />
+          <input type="tel" class="form-input" id="reqPhone" placeholder="Phone (optional)" />
+        </div>
+        <input type="text" class="form-input" id="reqReferral"
+          placeholder="How did you hear about NVRMND? (optional)" />
+        <textarea class="form-textarea" id="reqMessage"
+          placeholder="Brief message — why are you interested in NVRMND?"></textarea>
+        <button type="button" class="btn-primary" id="reqSubmit">Submit Request</button>
+        <div class="form-message" id="reqMessage2"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════ SCROLLING DECK ═══════════ -->
+  <div class="deck-view" id="deckView">
+
+    <!-- HERO -->
+    <section class="deck-hero">
+      <div class="deck-hero-logo reveal">NVRMND</div>
+      <div class="deck-hero-tagline reveal reveal-delay-1">Everything is inside.</div>
+      <p class="deck-hero-desc reveal reveal-delay-2">A high-end, fully immersive wellness space offering guided and
+        self-led experiences through Cold Plunge, Sauna, Meditation, and Breathwork &mdash; located at The Forum
+        Carlsbad.</p>
+      <div class="deck-hero-stats reveal reveal-delay-3">
+        <div class="hero-stat">
+          <div class="hero-stat-value">6,500</div>
+          <div class="hero-stat-label">Sq. Ft.</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">Carlsbad, CA</div>
+          <div class="hero-stat-label">Location</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">2027</div>
+          <div class="hero-stat-label">Target Opening</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- MARKET OPPORTUNITY -->
+    <section class="deck-section" id="sMarket">
+      <div class="deck-inner">
+        <div class="deck-label reveal">01 &mdash; Market</div>
+        <h2 class="deck-heading reveal reveal-delay-1">A $450B market<br>at an inflection point.</h2>
+        <p class="deck-subheading reveal reveal-delay-2">Search interest in cold plunge, breathwork, and immersive
+          wellness has surged since 2020. The market is growing &mdash; but the experience hasn&rsquo;t caught up.</p>
+
+        <div class="market-numbers reveal reveal-delay-3">
+          <div class="market-number">
+            <div class="market-value">$<span class="counter" data-target="450">0</span><span
+                class="market-unit">B</span></div>
+            <div class="market-desc">U.S. Wellness Market</div>
+          </div>
+          <div class="market-number">
+            <div class="market-value">$<span class="counter" data-target="1.8">0</span><span
+                class="market-unit">B</span></div>
+            <div class="market-desc">U.S. Meditation Market</div>
+          </div>
+          <div class="market-number">
+            <div class="market-value"><span class="counter" data-target="7">0</span><span class="market-unit">%
+                CAGR</span></div>
+            <div class="market-desc">Annual Growth Rate</div>
+          </div>
+        </div>
+
+        <!-- Trend Chart -->
+        <div class="trend-chart reveal reveal-delay-4">
+          <svg viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet">
+            <!-- Grid lines -->
+            <line x1="0" y1="50" x2="800" y2="50" stroke="rgba(138,130,121,0.08)" stroke-width="1" />
+            <line x1="0" y1="100" x2="800" y2="100" stroke="rgba(138,130,121,0.08)" stroke-width="1" />
+            <line x1="0" y1="150" x2="800" y2="150" stroke="rgba(138,130,121,0.08)" stroke-width="1" />
+            <!-- Year markers -->
+            <text x="100" y="195" fill="rgba(138,130,121,0.3)" font-family="Inter, sans-serif"
+              font-size="10">2010</text>
+            <text x="300" y="195" fill="rgba(138,130,121,0.3)" font-family="Inter, sans-serif"
+              font-size="10">2015</text>
+            <text x="500" y="195" fill="rgba(138,130,121,0.3)" font-family="Inter, sans-serif"
+              font-size="10">2020</text>
+            <text x="700" y="195" fill="rgba(138,130,121,0.3)" font-family="Inter, sans-serif"
+              font-size="10">2025</text>
+            <!-- Sauna (steady, slight rise) -->
+            <polyline class="trend-line sauna" id="lineSauna"
+              points="0,130 100,128 200,125 300,120 400,115 500,100 600,70 700,50 800,40" />
+            <!-- Cold Plunge (flat then explosive) -->
+            <polyline class="trend-line cold-plunge" id="lineCold"
+              points="0,175 100,175 200,175 300,175 400,170 500,140 600,80 700,35 800,20" />
+            <!-- Breathwork (flat then rises) -->
+            <polyline class="trend-line breathwork" id="lineBreath"
+              points="0,160 100,158 200,158 300,155 400,150 500,110 600,60 700,30 800,15" />
+            <!-- Immersive Experience (latest surge) -->
+            <polyline class="trend-line immersive" id="lineImmersive"
+              points="0,175 100,175 200,175 300,175 400,175 500,170 600,120 700,45 800,10" />
+          </svg>
+        </div>
+        <div class="trend-legend reveal reveal-delay-5">
+          <div class="trend-legend-item">
+            <div class="trend-dot" style="background:#F5F0EB"></div>Sauna
+          </div>
+          <div class="trend-legend-item">
+            <div class="trend-dot" style="background:#8A8279"></div>Cold Plunge
+          </div>
+          <div class="trend-legend-item">
+            <div class="trend-dot" style="background:#D4A574"></div>Breathwork
+          </div>
+          <div class="trend-legend-item">
+            <div class="trend-dot" style="background:#C4946A"></div>Immersive
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- THE PROBLEM -->
+    <section class="deck-section" id="sProblem">
+      <div class="deck-inner">
+        <div class="deck-label reveal">02 &mdash; Problem</div>
+        <h2 class="deck-heading reveal reveal-delay-1">Demand is surging.<br>Supply isn&rsquo;t keeping up.</h2>
+        <p class="deck-subheading reveal reveal-delay-2">People are searching for these experiences and not finding what
+          they need. The current landscape has gaps.</p>
+
+        <div class="problem-grid">
+          <div class="problem-card reveal reveal-delay-1" data-num="01">
+            <div class="problem-card-title">Fragmented Offerings</div>
+            <div class="problem-card-desc">Current models don&rsquo;t incorporate multiple modalities under one roof.
+              Consumers cobble together separate studios, spas, and apps.</div>
+          </div>
+          <div class="problem-card reveal reveal-delay-2" data-num="02">
+            <div class="problem-card-title">Instructor Dependency</div>
+            <div class="problem-card-desc">Traditional wellness businesses depend entirely on instructors for content.
+              The experience is inconsistent and the business is fragile.</div>
+          </div>
+          <div class="problem-card reveal reveal-delay-3" data-num="03">
+            <div class="problem-card-title">Social Disconnection</div>
+            <div class="problem-card-desc">Unprecedented levels of anxiety and depression. People need physical spaces
+              for genuine connection &mdash; not another app.</div>
+          </div>
+          <div class="problem-card reveal reveal-delay-4" data-num="04">
+            <div class="problem-card-title">Low-End Experience</div>
+            <div class="problem-card-desc">Most wellness spaces feel clinical or gym-like. There is no premium,
+              immersive option for the growing audience that values experience quality.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- THE SOLUTION -->
+    <section class="deck-section" id="sSolution">
+      <div class="deck-inner">
+        <div class="deck-label reveal">03 &mdash; Solution</div>
+        <h2 class="deck-heading reveal reveal-delay-1">NVRMND is the answer.</h2>
+        <p class="deck-subheading reveal reveal-delay-2">A fully programmable, technology-driven wellness environment.
+          No gurus. No trends. Just space designed around how you actually want to feel.</p>
+
+        <div class="solution-features">
+          <div class="solution-feature reveal reveal-delay-1">
+            <span class="solution-icon">&#9670;</span>
+            <div class="solution-title">Fully Immersive</div>
+            <div class="solution-desc">Programmable audio-visual environments that transform the space to match each
+              experience.</div>
+          </div>
+          <div class="solution-feature reveal reveal-delay-2">
+            <span class="solution-icon">&#9681;</span>
+            <div class="solution-title">All Under One Roof</div>
+            <div class="solution-desc">Cold plunge, sauna, breathwork, and meditation in a single, premium location.
+            </div>
+          </div>
+          <div class="solution-feature reveal reveal-delay-3">
+            <span class="solution-icon">&#10023;</span>
+            <div class="solution-title">Curated Experiences</div>
+            <div class="solution-desc">Technology-driven content ensures consistent, high-quality experiences
+              independent of any single instructor.</div>
+          </div>
+          <div class="solution-feature reveal reveal-delay-1">
+            <span class="solution-icon">&#9673;</span>
+            <div class="solution-title">Group &amp; Solo</div>
+            <div class="solution-desc">Guided group sessions and self-led individual experiences to serve every comfort
+              level.</div>
+          </div>
+          <div class="solution-feature reveal reveal-delay-2">
+            <span class="solution-icon">&#9826;</span>
+            <div class="solution-title">Community Hub</div>
+            <div class="solution-desc">An alternative to &ldquo;happy hour&rdquo; &mdash; social gatherings centered
+              around wellness rather than consumption.</div>
+          </div>
+          <div class="solution-feature reveal reveal-delay-3">
+            <span class="solution-icon">&#10070;</span>
+            <div class="solution-title">High-End Design</div>
+            <div class="solution-desc">Luxury spa-level aesthetic. No YMCA effect. Designed to feel like a destination,
+              not a gym.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- FINANCIALS -->
+    <section class="deck-section" id="sFinancials">
+      <div class="deck-inner">
+        <div class="deck-label reveal">04 &mdash; Financials</div>
+        <h2 class="deck-heading reveal reveal-delay-1">Strong unit economics<br>at conservative assumptions.</h2>
+        <p class="deck-subheading reveal reveal-delay-2">Fully ramped annual projections across two fill-rate scenarios.
+          Even at conservative utilization, the model produces strong EBITDA margins.</p>
+
+        <div class="fin-scenarios">
+          <div class="fin-scenario reveal reveal-delay-2">
+            <div class="fin-scenario-label">Conservative</div>
+            <div class="fin-fill-rate">45% <span>fill rate</span></div>
+            <div class="fin-row"><span class="fin-row-label">Revenue</span><span class="fin-row-value">$4.1M</span>
+            </div>
+            <div class="fin-row"><span class="fin-row-label">COGS</span><span class="fin-row-value">($80K)</span></div>
+            <div class="fin-row"><span class="fin-row-label">Staff</span><span class="fin-row-value">($447K)</span>
+            </div>
+            <div class="fin-row"><span class="fin-row-label">Rent</span><span class="fin-row-value">($343K)</span></div>
+            <div class="fin-row"><span class="fin-row-label">Operating</span><span class="fin-row-value">($410K)</span>
+            </div>
+            <div class="fin-row"><span class="fin-row-label">Marketing</span><span class="fin-row-value">($120K)</span>
+            </div>
+            <div class="fin-row highlight"><span class="fin-row-label">EBITDA</span><span
+                class="fin-row-value">$2.6M</span></div>
+            <div class="fin-bar-wrap">
+              <div class="fin-bar-label">EBITDA Margin</div>
+              <div class="fin-bar-track">
+                <div class="fin-bar-fill" data-width="64"></div>
+              </div>
+            </div>
+          </div>
+          <div class="fin-scenario target reveal reveal-delay-3">
+            <div class="fin-scenario-label">Target</div>
+            <div class="fin-fill-rate">65% <span>fill rate</span></div>
+            <div class="fin-row"><span class="fin-row-label">Revenue</span><span class="fin-row-value">$5.9M</span>
+            </div>
+            <div class="fin-row"><span class="fin-row-label">COGS</span><span class="fin-row-value">($80K)</span></div>
+            <div class="fin-row"><span class="fin-row-label">Staff</span><span class="fin-row-value">($447K)</span>
+            </div>
+            <div class="fin-row"><span class="fin-row-label">Rent</span><span class="fin-row-value">($343K)</span></div>
+            <div class="fin-row"><span class="fin-row-label">Operating</span><span class="fin-row-value">($593K)</span>
+            </div>
+            <div class="fin-row"><span class="fin-row-label">Marketing</span><span class="fin-row-value">($120K)</span>
+            </div>
+            <div class="fin-row highlight"><span class="fin-row-label">EBITDA</span><span
+                class="fin-row-value">$4.3M</span></div>
+            <div class="fin-bar-wrap">
+              <div class="fin-bar-label">EBITDA Margin</div>
+              <div class="fin-bar-track">
+                <div class="fin-bar-fill" data-width="72"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- INVESTMENT OPPORTUNITY -->
+    <section class="deck-section" id="sInvest">
+      <div class="deck-inner">
+        <div class="deck-label reveal">05 &mdash; The Opportunity</div>
+        <h2 class="deck-heading reveal reveal-delay-1">Investment highlights.</h2>
+
+        <div class="invest-grid">
+          <div class="invest-card reveal reveal-delay-1">
+            <div class="invest-card-value">$4.2M</div>
+            <div class="invest-card-label">Capital Raise</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-2">
+            <div class="invest-card-value">70%</div>
+            <div class="invest-card-label">Equity Offering</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-3">
+            <div class="invest-card-value">2.5&ndash;3.5 yr</div>
+            <div class="invest-card-label">Expected Payback</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-1">
+            <div class="invest-card-value">43&ndash;70%</div>
+            <div class="invest-card-label">Annual Return (Ramped)</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-2">
+            <div class="invest-card-value">6 mo</div>
+            <div class="invest-card-label">Cash Flow Positive</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-3">
+            <div class="invest-card-value">Equity</div>
+            <div class="invest-card-label">After-Market Exit Options</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- COMPETITIVE LANDSCAPE -->
+    <section class="deck-section" id="sCompetitive">
+      <div class="deck-inner">
+        <div class="deck-label reveal">06 &mdash; Landscape</div>
+        <h2 class="deck-heading reveal reveal-delay-1">Closest competitors are thriving &mdash;<br>despite missing the
+          mark.</h2>
+        <p class="deck-subheading reveal reveal-delay-2">NVRMND delivers the complete package that no competitor
+          currently offers.</p>
+
+        <table class="comp-table reveal reveal-delay-3">
+          <thead>
+            <tr>
+              <th style="text-align:left">Feature</th>
+              <th>Breathe Degrees</th>
+              <th>Othership</th>
+              <th>NVRMND</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cold plunge &amp; sauna</td>
+              <td><span class="comp-check">&#10003;</span></td>
+              <td><span class="comp-check">&#10003;</span></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>High-end, spa-like setting</td>
+              <td></td>
+              <td></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Avoids &ldquo;YMCA effect&rdquo;</td>
+              <td></td>
+              <td><span class="comp-check">&#10003;</span></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Meditation / breathwork room</td>
+              <td><span class="comp-check">&#10003;</span></td>
+              <td></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Avoids &ldquo;guru effect&rdquo;</td>
+              <td></td>
+              <td></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Fully immersive A/V</td>
+              <td></td>
+              <td></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Path-based programming</td>
+              <td></td>
+              <td></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Alternative &ldquo;happy hour&rdquo;</td>
+              <td></td>
+              <td><span class="comp-check">&#10003;</span></td>
+              <td><span class="comp-check">&#10003;</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+    <!-- TEAM -->
+    <section class="deck-section" id="sTeam">
+      <div class="deck-inner">
+        <div class="deck-label reveal">07 &mdash; Team</div>
+        <h2 class="deck-heading reveal reveal-delay-1">Built by operators,<br>not just visionaries.</h2>
+
+        <div class="team-grid">
+          <div class="team-card reveal reveal-delay-1">
+            <div class="team-avatar"><span class="team-initials">DD</span></div>
+            <div class="team-name">Danny Davis</div>
+            <div class="team-role">Customer Acquisition &amp; Retention</div>
+          </div>
+          <div class="team-card reveal reveal-delay-2">
+            <div class="team-avatar"><span class="team-initials">JG</span></div>
+            <div class="team-name">John Girard</div>
+            <div class="team-role">Operations, Systems &amp; Finance</div>
+          </div>
+          <div class="team-card reveal reveal-delay-3">
+            <div class="team-avatar"><span class="team-initials">JR</span></div>
+            <div class="team-name">John Roehrig</div>
+            <div class="team-role">Content &amp; Creative Director</div>
+          </div>
+        </div>
+
+        <div class="team-partners reveal reveal-delay-4">
+          <div class="team-partners-label">Key Partners</div>
+          <div class="team-partners-list">
+            ID Solutions, Inc. &mdash; Interior Architecture &amp; Design<br>
+            Watershape Consulting &mdash; Cold Plunge &amp; Sauna Engineering<br>
+            Flora &amp; Fauna Visions &mdash; Immersive Design &amp; Implementation<br>
+            White Construction &mdash; Commercial General Contractor
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- TIMELINE -->
+    <section class="deck-section" id="sTimeline">
+      <div class="deck-inner">
+        <div class="deck-label reveal">08 &mdash; Timeline</div>
+        <h2 class="deck-heading reveal reveal-delay-1">Location 1 roadmap.</h2>
+
+        <div class="timeline">
+          <div class="timeline-item active reveal reveal-delay-1">
+            <div class="timeline-dot"></div>
+            <div class="timeline-phase">Phase 1</div>
+            <div class="timeline-title">Fundraise</div>
+            <div class="timeline-desc">4 months (Month 0&ndash;3). Capital raise, investor onboarding, and final site
+              planning for The Forum Carlsbad location.</div>
+          </div>
+          <div class="timeline-item reveal reveal-delay-2">
+            <div class="timeline-dot"></div>
+            <div class="timeline-phase">Phase 2</div>
+            <div class="timeline-title">Buildout</div>
+            <div class="timeline-desc">9 months (Month 4&ndash;12). Construction, immersive technology installation,
+              equipment, and pre-launch marketing campaign.</div>
+          </div>
+          <div class="timeline-item reveal reveal-delay-3">
+            <div class="timeline-dot"></div>
+            <div class="timeline-phase">Phase 3</div>
+            <div class="timeline-title">Doors Open &amp; Ramp</div>
+            <div class="timeline-desc">Projected cash-flow positive within 6 months of opening. Full return of capital
+              anticipated within 50 months from doors open.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LOCATION -->
+    <section class="deck-section" id="sLocation">
+      <div class="deck-inner">
+        <div class="deck-label reveal">09 &mdash; Location</div>
+        <h2 class="deck-heading reveal reveal-delay-1">The Forum Carlsbad.</h2>
+        <p class="deck-subheading reveal reveal-delay-2">Southern California&rsquo;s premier retail center. A
+          wellness-aligned community with substantial household income in the immediate trade area.</p>
+
+        <div class="invest-grid" style="margin-top:48px">
+          <div class="invest-card reveal reveal-delay-1">
+            <div class="invest-card-value">Premium</div>
+            <div class="invest-card-label">Prime retail location in Carlsbad</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-2">
+            <div class="invest-card-value">7 Year</div>
+            <div class="invest-card-label">Lease with two 3-year options</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-3">
+            <div class="invest-card-value">$191K+</div>
+            <div class="invest-card-label">Median household income (45-64)</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-1">
+            <div class="invest-card-value">Luxury</div>
+            <div class="invest-card-label">High-end spa-style buildout</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-2">
+            <div class="invest-card-value">A/V</div>
+            <div class="invest-card-label">Programmable immersive systems</div>
+          </div>
+          <div class="invest-card reveal reveal-delay-3">
+            <div class="invest-card-value">Co-tenants</div>
+            <div class="invest-card-label">Lululemon, Vuori, Apple, Nike, Alo</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- DOWNLOADS -->
+    <section class="deck-section" id="sDownloads">
+      <div class="deck-inner">
+        <div class="deck-label reveal">10 &mdash; Documents</div>
+        <h2 class="deck-heading reveal reveal-delay-1">Due diligence materials.</h2>
+        <p class="deck-subheading reveal reveal-delay-2">Download the full documents for detailed review.</p>
+
+        <div class="download-cards">
+          <div class="download-card reveal reveal-delay-1">
+            <div class="download-icon">PDF</div>
+            <div class="download-title">Investor Pitch Deck</div>
+            <div class="download-meta">Full presentation &middot; Coming soon</div>
+          </div>
+          <div class="download-card reveal reveal-delay-2">
+            <div class="download-icon">XLS</div>
+            <div class="download-title">Financial Projections</div>
+            <div class="download-meta">Revenue model &middot; Coming soon</div>
+          </div>
+          <div class="download-card reveal reveal-delay-3">
+            <div class="download-icon">PDF</div>
+            <div class="download-title">Executive Summary</div>
+            <div class="download-meta">Overview document &middot; Coming soon</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- CTA -->
+    <div class="deck-cta">
+      <div class="deck-label reveal">Let&rsquo;s Talk</div>
+      <h2 class="deck-heading reveal reveal-delay-1">Interested in NVRMND?</h2>
+      <p class="deck-subheading reveal reveal-delay-2" style="margin:0 auto">We&rsquo;d love to walk you through the
+        opportunity in detail.</p>
+      <a href="mailto:louisc@nvrmnd.life" class="deck-cta-email reveal reveal-delay-3">Get in Touch &rarr;</a>
+      <div class="deck-cta-note reveal reveal-delay-4">This material is confidential and intended solely for the
+        recipient.</div>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="page-footer">
+    <span>&copy; 2026 NVRMND Inc. &middot; Confidential</span>
+  </footer>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
+  <script>
+    /* ═══════════ SUPABASE CONFIG ═══════════ */
+    var SUPABASE_URL = 'https://ufudkovmqcwmmxzjdjqy.supabase.co';
+    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmdWRrb3ZtcWN3bW14empkanF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5OTY0NzIsImV4cCI6MjA4ODU3MjQ3Mn0.ft2b4jKi9ilKbytVmKgU0jqTg5RvVHUXRMH-s87ADts';
+
+    /* ═══════════ ACCESS CODE GATE ═══════════ */
+    (function () {
+      var accessView = document.getElementById('accessView');
+      var deckView = document.getElementById('deckView');
+      var codeInput = document.getElementById('accessCode');
+      var accessBtn = document.getElementById('accessBtn');
+      var message = document.getElementById('accessMessage');
+      var logoutBtn = document.getElementById('logoutBtn');
+      var requestToggle = document.getElementById('requestToggle');
+      var requestForm = document.getElementById('requestForm');
+      var reqSubmit = document.getElementById('reqSubmit');
+
+      // Supabase RPC call
+      function validateCode(code) {
+        return fetch(SUPABASE_URL + '/rest/v1/rpc/validate_access_code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+          },
+          body: JSON.stringify({ input_code: code })
+        }).then(function (res) { return res.json(); });
+      }
+
+      // Submit access request to Supabase
+      function submitRequest(data) {
+        return fetch(SUPABASE_URL + '/rest/v1/access_requests', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(data)
+        });
+      }
+
+      // Send Slack notification when someone requests access
+      var SLACK_WEBHOOK = 'https://hooks.slack.com/services/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';
+      function sendSlackNotification(data) {
+        var now = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+        fetch(SLACK_WEBHOOK, {
+          method: 'POST',
+          body: JSON.stringify({
+            text: '*New Investor Access Request*',
+            blocks: [
+              { type: 'header', text: { type: 'plain_text', text: '🔔 New Investor Access Request' } },
+              { type: 'section', fields: [
+                { type: 'mrkdwn', text: '*Name:*\n' + data.full_name },
+                { type: 'mrkdwn', text: '*Email:*\n' + data.email }
+              ]},
+              { type: 'section', fields: [
+                { type: 'mrkdwn', text: '*Company:*\n' + (data.company || '_Not provided_') },
+                { type: 'mrkdwn', text: '*Phone:*\n' + (data.phone || '_Not provided_') }
+              ]},
+              { type: 'section', fields: [
+                { type: 'mrkdwn', text: '*Referral:*\n' + (data.referral_source || '_Not provided_') },
+                { type: 'mrkdwn', text: '*Submitted:*\n' + now }
+              ]},
+              data.message ? { type: 'section', text: { type: 'mrkdwn', text: '*Message:*\n> ' + data.message } } : null,
+              { type: 'divider' },
+              { type: 'context', elements: [
+                { type: 'mrkdwn', text: '📋 Review in <https://supabase.com/dashboard|Supabase> → access_requests table' }
+              ]}
+            ].filter(Boolean)
+          })
+        }).catch(function () { /* silent — Supabase is the source of truth */ });
+      }
+
+      // Check for existing session — re-validate with server
+      var session = sessionStorage.getItem('nvrmnd_investor');
+      if (session) {
+        try {
+          var cached = JSON.parse(session);
+          // Re-validate the stored code against the server
+          if (cached._code) {
+            validateCode(cached._code).then(function(result) {
+              if (result && result.valid) {
+                showDeck(result, cached._code);
+              } else {
+                // Code was deactivated — force logout
+                sessionStorage.removeItem('nvrmnd_investor');
+              }
+            }).catch(function() {
+              // Network error — allow cached session temporarily
+              showDeck(cached, cached._code);
+            });
+          } else {
+            // Legacy session without code — force re-login
+            sessionStorage.removeItem('nvrmnd_investor');
+          }
+        } catch (e) {
+          sessionStorage.removeItem('nvrmnd_investor');
+        }
+      }
+
+      function showDeck(partner, code) {
+        accessView.style.display = 'none';
+        deckView.classList.add('active');
+        logoutBtn.style.display = 'block';
+        // Store session with code for re-validation on next load
+        var sessionData = { first_name: partner.first_name, initials: partner.initials, _code: code };
+        sessionStorage.setItem('nvrmnd_investor', JSON.stringify(sessionData));
+
+        // Initialize scroll animations after deck is visible
+        setTimeout(initDeckAnimations, 100);
+      }
+
+      function handleAccess() {
+        var code = codeInput.value.trim();
+        codeInput.classList.remove('input-error');
+        message.className = 'form-message';
+        message.style.display = 'none';
+
+        if (!code) {
+          codeInput.classList.add('input-error');
+          codeInput.focus();
+          return;
+        }
+
+        accessBtn.disabled = true;
+        accessBtn.textContent = 'VERIFYING...';
+
+        validateCode(code).then(function (result) {
+          accessBtn.disabled = false;
+          accessBtn.textContent = 'ENTER';
+
+          if (result && result.valid) {
+            showDeck(result, code);
+          } else if (result && result.error) {
+            // Rate limited
+            message.textContent = result.error;
+            message.className = 'form-message show error';
+            codeInput.value = '';
+          } else {
+            message.textContent = 'Invalid access code. Please try again or contact hello@nvrmnd.life';
+            message.className = 'form-message show error';
+            codeInput.classList.add('input-error');
+            codeInput.value = '';
+            codeInput.focus();
+            setTimeout(function () { codeInput.classList.remove('input-error'); }, 2000);
+          }
+        }).catch(function () {
+          accessBtn.disabled = false;
+          accessBtn.textContent = 'ENTER';
+          message.textContent = 'Connection error. Please try again.';
+          message.className = 'form-message show error';
+        });
+      }
+
+      accessBtn.addEventListener('click', handleAccess);
+      codeInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') handleAccess();
+      });
+
+      // Request Access toggle
+      requestToggle.addEventListener('click', function () {
+        requestForm.classList.toggle('active');
+        requestToggle.textContent = requestForm.classList.contains('active') ? 'Cancel' : 'Request Access';
+      });
+
+      // Request Access submit
+      reqSubmit.addEventListener('click', function () {
+        var name = document.getElementById('reqName').value.trim();
+        var email = document.getElementById('reqEmail').value.trim();
+        var company = document.getElementById('reqCompany').value.trim();
+        var phone = document.getElementById('reqPhone').value.trim();
+        var referral = document.getElementById('reqReferral').value.trim();
+        var msg = document.getElementById('reqMessage').value.trim();
+        var msgEl = document.getElementById('reqMessage2');
+
+        if (!name || !email) {
+          msgEl.textContent = 'Please provide your name and email.';
+          msgEl.className = 'form-message show error';
+          return;
+        }
+
+        reqSubmit.disabled = true;
+        reqSubmit.textContent = 'SUBMITTING...';
+
+        var requestData = {
+          full_name: name,
+          email: email,
+          company: company || null,
+          phone: phone || null,
+          referral_source: referral || null,
+          message: msg || null
+        };
+
+        // Store in Supabase (status defaults to "pending") + notify Slack
+        submitRequest(requestData).then(function (res) {
+          reqSubmit.disabled = false;
+          reqSubmit.textContent = 'SUBMIT REQUEST';
+
+          if (res.ok) {
+            // Notify admin via Slack
+            sendSlackNotification(requestData);
+
+            msgEl.textContent = 'Request submitted. We\'ll be in touch shortly.';
+            msgEl.className = 'form-message show success';
+            document.getElementById('reqName').value = '';
+            document.getElementById('reqEmail').value = '';
+            document.getElementById('reqCompany').value = '';
+            document.getElementById('reqPhone').value = '';
+            document.getElementById('reqReferral').value = '';
+            document.getElementById('reqMessage').value = '';
+          } else {
+            msgEl.textContent = 'Something went wrong. Please email louisc@nvrmnd.life directly.';
+            msgEl.className = 'form-message show error';
+          }
+        }).catch(function () {
+          reqSubmit.disabled = false;
+          reqSubmit.textContent = 'SUBMIT REQUEST';
+          msgEl.textContent = 'Connection error. Please email louisc@nvrmnd.life directly.';
+          msgEl.className = 'form-message show error';
+        });
+      });
+
+      // Logout
+      logoutBtn.addEventListener('click', function () {
+        sessionStorage.removeItem('nvrmnd_investor');
+        deckView.classList.remove('active');
+        accessView.style.display = 'flex';
+        logoutBtn.style.display = 'none';
+        codeInput.value = '';
+        message.className = 'form-message';
+        message.style.display = 'none';
+        window.scrollTo(0, 0);
+      });
+
+      // Entrance animation for access view
+      if (!sessionStorage.getItem('nvrmnd_investor')) {
+        gsap.fromTo('.access-panel',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.3 }
+        );
+      }
+    })();
+
+
+    /* ═══════════ DECK ANIMATIONS ═══════════ */
+    function initDeckAnimations() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Scroll progress bar
+      window.addEventListener('scroll', function () {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        document.getElementById('scrollProgress').style.width = progress + '%';
+
+        // Navbar background
+        document.getElementById('navbar').classList.toggle('scrolled', scrollTop > 80);
+      });
+
+      // Reveal on scroll (IntersectionObserver)
+      var reveals = document.querySelectorAll('.reveal');
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      reveals.forEach(function (el) { observer.observe(el); });
+
+      // Counter animations
+      var counters = document.querySelectorAll('.counter');
+      var counterObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      counters.forEach(function (el) { counterObserver.observe(el); });
+
+      function animateCounter(el) {
+        var target = parseFloat(el.getAttribute('data-target'));
+        var isDecimal = target % 1 !== 0;
+        var duration = 2000;
+        var start = performance.now();
+
+        function update(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var current = target * eased;
+
+          if (isDecimal) {
+            el.textContent = current.toFixed(1);
+          } else {
+            el.textContent = Math.round(current).toLocaleString();
+          }
+
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      }
+
+      // Animate trend lines (stroke-dashoffset)
+      var lines = document.querySelectorAll('.trend-line');
+      lines.forEach(function (line) {
+        var length = line.getTotalLength();
+        line.style.strokeDasharray = length;
+        line.style.strokeDashoffset = length;
+
+        ScrollTrigger.create({
+          trigger: '.trend-chart',
+          start: 'top 75%',
+          onEnter: function () {
+            gsap.to(line, {
+              strokeDashoffset: 0,
+              duration: 2,
+              ease: 'power2.out',
+              delay: Math.random() * 0.3
+            });
+          }
+        });
+      });
+
+      // Animate financial bars
+      var bars = document.querySelectorAll('.fin-bar-fill');
+      bars.forEach(function (bar) {
+        ScrollTrigger.create({
+          trigger: bar,
+          start: 'top 80%',
+          onEnter: function () {
+            bar.style.width = bar.getAttribute('data-width') + '%';
+          }
+        });
+      });
+    }
+
+
+    /* ═══════════ AUTO-INIT IF ALREADY AUTHENTICATED ═══════════ */
+    if (sessionStorage.getItem('nvrmnd_investor')) {
+      // Deck is already shown, init animations
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(initDeckAnimations, 200);
+      });
+    }
+  </script>
+</body>
+
+</html>
