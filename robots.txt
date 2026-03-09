@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /investor.html
+
+Sitemap: https://nvrmnd.life/sitemap.xml

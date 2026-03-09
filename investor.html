@@ -7,7 +7,7 @@
   <title>NVRMND — Investor Access</title>
   <meta name="description" content="NVRMND Investor Portal. Explore the opportunity." />
   <meta name="robots" content="noindex, nofollow" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://ufudkovmqcwmmxzjdjqy.supabase.co https://hooks.slack.com; img-src 'self' data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -1264,7 +1264,7 @@
       <h1 class="panel-heading">Enter Access Code</h1>
       <div class="access-form">
         <input type="password" class="form-input code-input" id="accessCode" placeholder="Access code"
-          autocomplete="off" spellcheck="false" maxlength="10" />
+          autocomplete="off" spellcheck="false" />
         <button type="button" class="btn-primary" id="accessBtn">Enter</button>
       </div>
       <div class="form-message" id="accessMessage"></div>
@@ -1851,37 +1851,6 @@
         });
       }
 
-      // Send Slack notification when someone requests access
-      var SLACK_WEBHOOK = 'https://hooks.slack.com/services/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';
-      function sendSlackNotification(data) {
-        var now = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
-        fetch(SLACK_WEBHOOK, {
-          method: 'POST',
-          body: JSON.stringify({
-            text: '*New Investor Access Request*',
-            blocks: [
-              { type: 'header', text: { type: 'plain_text', text: '🔔 New Investor Access Request' } },
-              { type: 'section', fields: [
-                { type: 'mrkdwn', text: '*Name:*\n' + data.full_name },
-                { type: 'mrkdwn', text: '*Email:*\n' + data.email }
-              ]},
-              { type: 'section', fields: [
-                { type: 'mrkdwn', text: '*Company:*\n' + (data.company || '_Not provided_') },
-                { type: 'mrkdwn', text: '*Phone:*\n' + (data.phone || '_Not provided_') }
-              ]},
-              { type: 'section', fields: [
-                { type: 'mrkdwn', text: '*Referral:*\n' + (data.referral_source || '_Not provided_') },
-                { type: 'mrkdwn', text: '*Submitted:*\n' + now }
-              ]},
-              data.message ? { type: 'section', text: { type: 'mrkdwn', text: '*Message:*\n> ' + data.message } } : null,
-              { type: 'divider' },
-              { type: 'context', elements: [
-                { type: 'mrkdwn', text: '📋 Review in <https://supabase.com/dashboard|Supabase> → access_requests table' }
-              ]}
-            ].filter(Boolean)
-          })
-        }).catch(function () { /* silent — Supabase is the source of truth */ });
-      }
 
       // Check for existing session — re-validate with server
       var session = sessionStorage.getItem('nvrmnd_investor');
@@ -1898,8 +1867,8 @@
                 sessionStorage.removeItem('nvrmnd_investor');
               }
             }).catch(function() {
-              // Network error — allow cached session temporarily
-              showDeck(cached, cached._code);
+              // Network error — require re-authentication
+              sessionStorage.removeItem('nvrmnd_investor');
             });
           } else {
             // Legacy session without code — force re-login
@@ -2009,9 +1978,6 @@
           reqSubmit.textContent = 'SUBMIT REQUEST';
 
           if (res.ok) {
-            // Notify admin via Slack
-            sendSlackNotification(requestData);
-
             msgEl.textContent = 'Request submitted. We\'ll be in touch shortly.';
             msgEl.className = 'form-message show success';
             document.getElementById('reqName').value = '';
