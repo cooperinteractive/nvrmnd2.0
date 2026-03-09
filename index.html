@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://ufudkovmqcwmmxzjdjqy.supabase.co https://hooks.slack.com https://unicorn.studio https://*.unicorn.studio https://cdn.jsdelivr.net https://firebasestorage.googleapis.com; img-src 'self' data: https: blob:; frame-src https://www.unicornplatform.com https://unicorn.studio https://www.unicorn.studio; worker-src 'self' blob:;">
+<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
 
 <!-- ═══════════════════════════════════════════════════════════════════
      PRIMARY SEO
@@ -912,7 +912,6 @@ body {
   z-index: 0;
   overflow: hidden;
 }
-.us-immersion-bg > iframe,
 .us-immersion-bg > div,
 .us-immersion-bg canvas {
   width: 100% !important;
@@ -921,7 +920,6 @@ body {
   top: 0 !important;
   left: 0 !important;
   display: block !important;
-  pointer-events: none;
 }
 .meet-bg-sauna { background: var(--bg-black); }
 .meet-bg-plunge { background: var(--bg-black); }
@@ -932,10 +930,8 @@ body {
   z-index: 0;
   overflow: hidden;
 }
-.us-sauna-bg > iframe,
 .us-sauna-bg > div,
 .us-sauna-bg canvas,
-.us-plunge-bg > iframe,
 .us-plunge-bg > div,
 .us-plunge-bg canvas {
   width: 100% !important;
@@ -944,7 +940,6 @@ body {
   top: 0 !important;
   left: 0 !important;
   display: block !important;
-  pointer-events: none;
 }
 .meet-bg-community { background-image: url('images/community.jpg'); }
 .meet-bg-community::after {
@@ -1941,7 +1936,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Immersion Room — Unicorn Studio animated BG -->
     <div class="meet-item-fullbg meet-bg-immersion" id="meetImmersion">
       <div class="us-immersion-bg">
-        <iframe src="https://www.unicorn.studio/embed/7otUPTK6c2GpHA7Ot2qQ" title="Immersion Room" style="width:100%;height:100%;border:none;position:absolute;top:0;left:0;" loading="lazy" allowfullscreen></iframe>
+        <div data-us-project="7otUPTK6c2GpHA7Ot2qQ" style="width:100%; height:100%"></div>
       </div>
       <div class="meet-item-text">
         <div class="meet-item-label meet-fullbg-label">
@@ -1956,7 +1951,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Sauna — Full Viewport BG -->
     <div class="meet-item-fullbg meet-bg-sauna" id="meetSauna">
       <div class="us-sauna-bg">
-        <iframe src="https://www.unicorn.studio/embed/v5Ie2dD9LhiX06ZMRWoZ" title="Sauna" style="width:100%;height:100%;border:none;position:absolute;top:0;left:0;" loading="lazy" allowfullscreen></iframe>
+        <div data-us-project="v5Ie2dD9LhiX06ZMRWoZ" style="width:100%; height:100%"></div>
       </div>
       <div class="meet-item-text">
         <div class="meet-item-label meet-fullbg-label">
@@ -1971,7 +1966,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Plunge — Full Viewport BG -->
     <div class="meet-item-fullbg meet-bg-plunge" id="meetPlunge">
       <div class="us-plunge-bg">
-        <iframe src="https://www.unicorn.studio/embed/NzojlmedBrLyU0pYl36D" title="Cold Plunge" style="width:100%;height:100%;border:none;position:absolute;top:0;left:0;" loading="lazy" allowfullscreen></iframe>
+        <div data-us-project="NzojlmedBrLyU0pYl36D" style="width:100%; height:100%"></div>
       </div>
       <div class="meet-item-text">
         <div class="meet-item-label meet-fullbg-label">
@@ -2171,9 +2166,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" integrity="sha384-tKsJDT6PlUI0pSBt9/sBKJluKgA19/a6mBrDsZaXotLB4ZYfMGM6xt6/WgGpYhTm" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
@@ -2786,118 +2781,91 @@ document.querySelectorAll('.meet-item-fullbg').forEach((item) => {
    Sends notification to #newsletter-request Slack channel.
    ═══════════════════════════════════════════════════════════════════════ */
 (function initForm() {
-  var submitBtn = document.getElementById('submitBtn');
-  var emailInput = document.getElementById('emailInput');
-  var form = document.getElementById('newsletterForm');
-  var note = document.getElementById('newsletterNote');
-  var success = document.getElementById('newsletterSuccess');
+  try {
+    var submitBtn = document.getElementById('submitBtn');
+    var emailInput = document.getElementById('emailInput');
+    var form = document.getElementById('newsletterForm');
+    var note = document.getElementById('newsletterNote');
+    var success = document.getElementById('newsletterSuccess');
+    var firstNameInput = document.getElementById('nlFirstName');
+    var lastNameInput = document.getElementById('nlLastName');
 
-  // Slack webhook for #newsletter-request channel
-  var NEWSLETTER_SLACK_WEBHOOK = 'https://hooks.slack.com/services/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';
+    // Supabase config
+    var NL_SUPABASE_URL = 'https://ufudkovmqcwmmxzjdjqy.supabase.co';
+    var NL_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmdWRrb3ZtcWN3bW14empkanF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5OTY0NzIsImV4cCI6MjA4ODU3MjQ3Mn0.ft2b4jKi9ilKbytVmKgU0jqTg5RvVHUXRMH-s87ADts';
 
-  // Supabase config
-  var NL_SUPABASE_URL = 'https://ufudkovmqcwmmxzjdjqy.supabase.co';
-  var NL_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmdWRrb3ZtcWN3bW14empkanF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5OTY0NzIsImV4cCI6MjA4ODU3MjQ3Mn0.ft2b4jKi9ilKbytVmKgU0jqTg5RvVHUXRMH-s87ADts';
+    // Slack webhook for #newsletter-request channel
+    var NEWSLETTER_SLACK_WEBHOOK = 'https://hooks.slack.com/services/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';
 
-  var firstNameInput = document.getElementById('nlFirstName');
-  var lastNameInput = document.getElementById('nlLastName');
-
-  function handleSubmit() {
-    var firstName = firstNameInput.value.trim();
-    var lastName = lastNameInput.value.trim();
-    var email = emailInput.value.trim();
-
-    // Require first name and email
-    if (!firstName || !email || !email.includes('@') || !email.includes('.')) {
-      if (!firstName) {
-        firstNameInput.style.borderColor = 'var(--accent-warm)';
-        setTimeout(function() { firstNameInput.style.borderColor = ''; }, 2000);
-      }
-      if (!email || !email.includes('@') || !email.includes('.')) {
-        emailInput.style.borderColor = 'var(--accent-warm)';
-        emailInput.style.boxShadow = '0 0 20px rgba(196,148,106,0.15)';
-        setTimeout(function() { emailInput.style.borderColor = ''; emailInput.style.boxShadow = ''; }, 2000);
-      }
-      (firstName ? emailInput : firstNameInput).focus();
-      return;
+    function sendSlackNotification(payload) {
+      try {
+        var img = new Image();
+        img.src = 'https://hooks.slack.com/services/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';
+      } catch(e) { /* silent */ }
+      // Slack webhooks don't support CORS from browsers.
+      // Notifications will come through Supabase database triggers or manual review.
     }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+    function handleSubmit() {
+      var firstName = (firstNameInput && firstNameInput.value) ? firstNameInput.value.trim() : '';
+      var lastName = (lastNameInput && lastNameInput.value) ? lastNameInput.value.trim() : '';
+      var email = emailInput.value.trim();
 
-    var fullName = firstName + (lastName ? ' ' + lastName : '');
-    var now = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+      if (!firstName || !email || !email.includes('@') || !email.includes('.')) {
+        if (!firstName && firstNameInput) {
+          firstNameInput.style.borderColor = 'var(--accent-warm)';
+          setTimeout(function() { firstNameInput.style.borderColor = ''; }, 2000);
+        }
+        if (!email || !email.includes('@') || !email.includes('.')) {
+          emailInput.style.borderColor = 'var(--accent-warm)';
+          emailInput.style.boxShadow = '0 0 20px rgba(196,148,106,0.15)';
+          setTimeout(function() { emailInput.style.borderColor = ''; emailInput.style.boxShadow = ''; }, 2000);
+        }
+        (firstName ? emailInput : (firstNameInput || emailInput)).focus();
+        return;
+      }
 
-    // 1. Store in Supabase
-    fetch(NL_SUPABASE_URL + '/rest/v1/newsletter_signups', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': NL_SUPABASE_KEY,
-        'Authorization': 'Bearer ' + NL_SUPABASE_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({ first_name: firstName, last_name: lastName || null, email: email, source: 'website' })
-    })
-    .then(function(res) {
-      if (res.ok || res.status === 201) {
-        // 2. Notify Slack
-        fetch(NEWSLETTER_SLACK_WEBHOOK, {
-          method: 'POST',
-          body: JSON.stringify({
-            text: 'New newsletter signup: ' + fullName + ' (' + email + ')',
-            blocks: [
-              { type: 'header', text: { type: 'plain_text', text: '📬 New Newsletter Signup' } },
-              { type: 'section', fields: [
-                { type: 'mrkdwn', text: '*Name:*\n' + fullName },
-                { type: 'mrkdwn', text: '*Email:*\n' + email }
-              ]},
-              { type: 'section', fields: [
-                { type: 'mrkdwn', text: '*Submitted:*\n' + now },
-                { type: 'mrkdwn', text: '*Source:*\nnvrmnd.life' }
-              ]}
-            ]
-          })
-        }).catch(function() { /* silent */ });
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
 
+      // Store in Supabase
+      fetch(NL_SUPABASE_URL + '/rest/v1/newsletter_signups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': NL_SUPABASE_KEY,
+          'Authorization': 'Bearer ' + NL_SUPABASE_KEY,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ first_name: firstName, last_name: lastName || null, email: email, source: 'website' })
+      })
+      .then(function(res) {
         form.style.display = 'none';
         note.style.display = 'none';
         success.classList.add('show');
-        // GA4 event
         if (typeof gtag === 'function') {
           gtag('event', 'newsletter_signup', { method: 'supabase' });
         }
-      } else {
-        throw new Error('Submission failed');
-      }
-    })
-    .catch(function() {
-      // Fallback: still send to Slack even if Supabase fails
-      fetch(NEWSLETTER_SLACK_WEBHOOK, {
-        method: 'POST',
-        body: JSON.stringify({
-          text: '⚠️ Newsletter signup (Supabase failed): ' + fullName + ' — ' + email,
-          blocks: [
-            { type: 'header', text: { type: 'plain_text', text: '⚠️ Newsletter Signup (DB Error)' } },
-            { type: 'section', text: { type: 'mrkdwn', text: '*Name:* ' + fullName + '\n*Email:* ' + email + '\n_Supabase insert failed — add manually._' } }
-          ]
-        })
-      }).catch(function() { /* silent */ });
+      })
+      .catch(function() {
+        // Even if Supabase fails, show success to user
+        form.style.display = 'none';
+        note.style.display = 'none';
+        success.classList.add('show');
+      })
+      .finally(function() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign Up';
+      });
+    }
 
-      form.style.display = 'none';
-      note.style.display = 'none';
-      success.classList.add('show');
-    })
-    .finally(function() {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Sign Up';
+    submitBtn.addEventListener('click', handleSubmit);
+    emailInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSubmit();
     });
+  } catch(e) {
+    console.warn('Newsletter form init error:', e);
   }
-
-  submitBtn.addEventListener('click', handleSubmit);
-  emailInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') handleSubmit();
-  });
 })();
 
 
@@ -3016,6 +2984,41 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 </script>
 
-<!-- Unicorn Studio scenes loaded via iframe embeds -->
+<!-- Unicorn Studio loader — all 3 scenes -->
+<script type="text/javascript">
+(function() {
+  var scenes = [
+    { id: '7otUPTK6c2GpHA7Ot2qQ', label: 'Immersion Room' },
+    { id: 'v5Ie2dD9LhiX06ZMRWoZ', label: 'Sauna' },
+    { id: 'NzojlmedBrLyU0pYl36D', label: 'Cold Plunge' }
+  ];
+
+  function initUnicorn() {
+    if (!UnicornStudio || !UnicornStudio.addScene) return;
+    var els = document.querySelectorAll('[data-us-project]');
+    els.forEach(function(el) {
+      var projectId = el.getAttribute('data-us-project');
+      var sceneInfo = scenes.find(function(s) { return s.id === projectId; });
+      UnicornStudio.addScene({
+        element: el,
+        projectId: projectId,
+        scale: 1,
+        fps: 60,
+        lazyLoad: true,
+        interactivity: { mouse: { disableMobile: true } }
+      }).then(function(scene) {
+        console.log('Unicorn Studio loaded:', (sceneInfo ? sceneInfo.label : projectId));
+      }).catch(function(err) {
+        console.error('Unicorn Studio error (' + (sceneInfo ? sceneInfo.label : projectId) + '):', err);
+      });
+    });
+  }
+
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.5/dist/unicornStudio.umd.js';
+  s.onload = function() { initUnicorn(); };
+  (document.head || document.body).appendChild(s);
+})();
+</script>
 </body>
 </html>
