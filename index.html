@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://ufudkovmqcwmmxzjdjqy.supabase.co https://hooks.slack.com https://unicorn.studio https://*.unicorn.studio https://cdn.jsdelivr.net https://firebasestorage.googleapis.com; img-src 'self' data: https: blob:; frame-src https://www.unicornplatform.com https://unicorn.studio; worker-src 'self' blob:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://ufudkovmqcwmmxzjdjqy.supabase.co https://hooks.slack.com https://unicorn.studio https://*.unicorn.studio https://cdn.jsdelivr.net https://firebasestorage.googleapis.com; img-src 'self' data: https: blob:; frame-src https://www.unicornplatform.com https://unicorn.studio https://www.unicorn.studio; worker-src 'self' blob:;">
 
 <!-- ═══════════════════════════════════════════════════════════════════
      PRIMARY SEO
@@ -912,6 +912,7 @@ body {
   z-index: 0;
   overflow: hidden;
 }
+.us-immersion-bg > iframe,
 .us-immersion-bg > div,
 .us-immersion-bg canvas {
   width: 100% !important;
@@ -930,8 +931,10 @@ body {
   z-index: 0;
   overflow: hidden;
 }
+.us-sauna-bg > iframe,
 .us-sauna-bg > div,
 .us-sauna-bg canvas,
+.us-plunge-bg > iframe,
 .us-plunge-bg > div,
 .us-plunge-bg canvas {
   width: 100% !important;
@@ -1936,7 +1939,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Immersion Room — Unicorn Studio animated BG -->
     <div class="meet-item-fullbg meet-bg-immersion" id="meetImmersion">
       <div class="us-immersion-bg">
-        <div data-us-project="7otUPTK6c2GpHA7Ot2qQ" style="width:100%; height:100%"></div>
+        <iframe src="https://www.unicorn.studio/embed/7otUPTK6c2GpHA7Ot2qQ" title="Immersion Room" style="width:100%;height:100%;border:none;position:absolute;top:0;left:0;" loading="lazy" allowfullscreen></iframe>
       </div>
       <div class="meet-item-text">
         <div class="meet-item-label meet-fullbg-label">
@@ -1951,7 +1954,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Sauna — Full Viewport BG -->
     <div class="meet-item-fullbg meet-bg-sauna" id="meetSauna">
       <div class="us-sauna-bg">
-        <div data-us-project="v5Ie2dD9LhiX06ZMRWoZ" style="width:100%; height:100%"></div>
+        <iframe src="https://www.unicorn.studio/embed/v5Ie2dD9LhiX06ZMRWoZ" title="Sauna" style="width:100%;height:100%;border:none;position:absolute;top:0;left:0;" loading="lazy" allowfullscreen></iframe>
       </div>
       <div class="meet-item-text">
         <div class="meet-item-label meet-fullbg-label">
@@ -1966,7 +1969,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Plunge — Full Viewport BG -->
     <div class="meet-item-fullbg meet-bg-plunge" id="meetPlunge">
       <div class="us-plunge-bg">
-        <div data-us-project="NzojlmedBrLyU0pYl36D" style="width:100%; height:100%"></div>
+        <iframe src="https://www.unicorn.studio/embed/NzojlmedBrLyU0pYl36D" title="Cold Plunge" style="width:100%;height:100%;border:none;position:absolute;top:0;left:0;" loading="lazy" allowfullscreen></iframe>
       </div>
       <div class="meet-item-text">
         <div class="meet-item-label meet-fullbg-label">
@@ -3011,41 +3014,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 </script>
 
-<!-- Unicorn Studio loader — all 3 scenes -->
-<script type="text/javascript">
-(function() {
-  var scenes = [
-    { id: '7otUPTK6c2GpHA7Ot2qQ', label: 'Immersion Room' },
-    { id: 'v5Ie2dD9LhiX06ZMRWoZ', label: 'Sauna' },
-    { id: 'NzojlmedBrLyU0pYl36D', label: 'Cold Plunge' }
-  ];
-
-  function initUnicorn() {
-    if (!UnicornStudio || !UnicornStudio.addScene) return;
-    var els = document.querySelectorAll('[data-us-project]');
-    els.forEach(function(el) {
-      var projectId = el.getAttribute('data-us-project');
-      var sceneInfo = scenes.find(function(s) { return s.id === projectId; });
-      UnicornStudio.addScene({
-        element: el,
-        projectId: projectId,
-        scale: 1,
-        fps: 60,
-        lazyLoad: true,
-        interactivity: { mouse: { disableMobile: true } }
-      }).then(function(scene) {
-        console.log('Unicorn Studio loaded:', (sceneInfo ? sceneInfo.label : projectId));
-      }).catch(function(err) {
-        console.error('Unicorn Studio error (' + (sceneInfo ? sceneInfo.label : projectId) + '):', err);
-      });
-    });
-  }
-
-  var s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.5/dist/unicornStudio.umd.js';
-  s.onload = function() { initUnicorn(); };
-  (document.head || document.body).appendChild(s);
-})();
-</script>
+<!-- Unicorn Studio scenes loaded via iframe embeds -->
 </body>
 </html>
