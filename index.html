@@ -572,13 +572,13 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 0;
-  max-width: 1000px;
+  max-width: 1200px;
   width: 100%;
 }
 .infographic-step {
   flex: 1;
   text-align: center;
-  padding: 0 24px;
+  padding: 0 18px;
   opacity: 0;
   transform: translateY(30px);
 }
@@ -1839,55 +1839,75 @@ body {
         <span class="infographic-label">Your Body Already Knows</span>
       </div>
     <div class="infographic-steps">
-      <!-- Step 1 -->
+      <!-- Step 1: Mind -->
       <div class="infographic-step" id="infoStep1">
         <div class="step-icon">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Heart / Pulse icon for Heart Rate -->
-            <path d="M32 52s-18-12-18-24c0-7 5-12 11-12 3.5 0 5.8 1.8 7 4 1.2-2.2 3.5-4 7-4 6 0 11 5 11 12 0 12-18 24-18 24z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-            <path d="M18 32h8l3-6 4 12 3-6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Brain / wave icon for Mind -->
+            <path d="M32 12c-8 0-14 6-14 13 0 4 2 7.5 5 10v9a4 4 0 004 4h10a4 4 0 004-4v-9c3-2.5 5-6 5-10 0-7-6-13-14-13z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M26 48h12M28 52h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M18 30c-4 0-6 3-4 6M46 30c4 0 6 3 4 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
           </svg>
         </div>
         <div class="step-number">01</div>
-        <h3 class="step-title">Heart Rate Rises</h3>
-        <p class="step-desc">Your heart pumps faster to circulate warm blood and maintain core temperature.</p>
+        <h3 class="step-title">Mind Quiets</h3>
+        <p class="step-desc">Guided breathwork shifts your nervous system. Cortisol drops. Alpha brain waves rise. The noise fades.</p>
         <div class="step-fill-bar"><div class="step-fill-progress" id="fillBar1"></div></div>
       </div>
       <div class="infographic-steps-divider"></div>
-      <!-- Step 2 -->
+      <!-- Step 2: Heat -->
       <div class="infographic-step" id="infoStep2">
         <div class="step-icon">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Lightning bolt icon for Norepinephrine -->
-            <path d="M35 8L18 36h12l-4 20L48 28H36l4-20z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+            <!-- Heat / flame icon -->
+            <path d="M32 8c0 12-14 18-14 30a14 14 0 0028 0C46 26 32 20 32 8z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M32 28c0 6-6 9-6 16a6 6 0 0012 0c0-7-6-10-6-16z" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.5"/>
           </svg>
         </div>
         <div class="step-number">02</div>
-        <h3 class="step-title">Norepinephrine Surges</h3>
-        <p class="step-desc">A neurotransmitter released to boost focus, attention, and mood, up to 530% increase.</p>
+        <h3 class="step-title">Heat Builds</h3>
+        <p class="step-desc">Heart rate climbs to 100&ndash;150 bpm &mdash; a cardiovascular response comparable to moderate exercise. Cardiac output rises 60&ndash;70%.</p>
         <div class="step-fill-bar"><div class="step-fill-progress" id="fillBar2"></div></div>
       </div>
       <div class="infographic-steps-divider"></div>
-      <!-- Step 3 -->
+      <!-- Step 3: Cold -->
       <div class="infographic-step" id="infoStep3">
         <div class="step-icon">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Sun / Radiance icon for Dopamine -->
-            <circle cx="32" cy="32" r="10" stroke="currentColor" stroke-width="1.5"/>
-            <line x1="32" y1="8" x2="32" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="32" y1="48" x2="32" y2="56" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="8" y1="32" x2="16" y2="32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="48" y1="32" x2="56" y2="32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="15" y1="15" x2="20.6" y2="20.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="43.4" y1="43.4" x2="49" y2="49" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="49" y1="15" x2="43.4" y2="20.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="20.6" y1="43.4" x2="15" y2="49" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Snowflake / cold icon -->
+            <line x1="32" y1="8" x2="32" y2="56" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="20" x2="53" y2="44" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="11" y1="44" x2="53" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="32" y1="8" x2="27" y2="14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="32" y1="8" x2="37" y2="14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="32" y1="56" x2="27" y2="50" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="32" y1="56" x2="37" y2="50" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="32" cy="32" r="4" stroke="currentColor" stroke-width="1.2" fill="none"/>
           </svg>
         </div>
         <div class="step-number">03</div>
-        <h3 class="step-title">Dopamine Climbs</h3>
-        <p class="step-desc">Levels of this "feel-good" chemical rise 250%, enhancing motivation and lasting clarity.</p>
+        <h3 class="step-title">Cold Sharpens</h3>
+        <p class="step-desc">Brief cold exposure triggers a 200&ndash;300% surge in norepinephrine &mdash; a neurotransmitter linked to focus, mood, and energy.</p>
         <div class="step-fill-bar"><div class="step-fill-progress" id="fillBar3"></div></div>
+      </div>
+      <div class="infographic-steps-divider"></div>
+      <!-- Step 4: Community -->
+      <div class="infographic-step" id="infoStep4">
+        <div class="step-icon">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- People / community icon -->
+            <circle cx="32" cy="18" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M18 48c0-8 6-14 14-14s14 6 14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <circle cx="14" cy="24" r="5" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.5"/>
+            <path d="M4 46c0-6 4-10 10-10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+            <circle cx="50" cy="24" r="5" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.5"/>
+            <path d="M60 46c0-6-4-10-10-10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="step-number">04</div>
+        <h3 class="step-title">Community Holds</h3>
+        <p class="step-desc">Strong social bonds are associated with a 50% increase in longevity. Shared experience is its own kind of medicine.</p>
+        <div class="step-fill-bar"><div class="step-fill-progress" id="fillBar4"></div></div>
       </div>
     </div>
     <!-- Overall progress: Meet NVRMND text fill -->
@@ -1972,7 +1992,7 @@ body {
           <span>04 / Community</span>
         </div>
         <h3>The Space Between</h3>
-        <p>Breathwork circles. Sound baths. Seasonal gatherings. A calendar of community events designed to bring people together around shared experience, not performance.</p>
+        <p>Breathwork circles. Sound baths. Conversations with luminaries. Purposeful gatherings built around shared intention &mdash; not content. The kind of room where you'd bring someone thoughtful.</p>
       </div>
     </div>
 
@@ -2431,7 +2451,7 @@ lenis.stop();
    COMBINED SOLUTION + INFOGRAPHIC — Pinned scroll timeline
    Phase 0: Solution heading + black hole animate in
    Phase 1: Solution fades out, infographic fades in
-   Phase 2: Three columns fill up with progress bars
+   Phase 2: Four columns fill up with progress bars
    Phase 3: MEET NVRMND text fills
    Black hole persists throughout all phases.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -2445,12 +2465,14 @@ lenis.stop();
   const steps = [
     document.getElementById('infoStep1'),
     document.getElementById('infoStep2'),
-    document.getElementById('infoStep3')
+    document.getElementById('infoStep3'),
+    document.getElementById('infoStep4')
   ];
   const fillBars = [
     document.getElementById('fillBar1'),
     document.getElementById('fillBar2'),
-    document.getElementById('fillBar3')
+    document.getElementById('fillBar3'),
+    document.getElementById('fillBar4')
   ];
   const dividers = section.querySelectorAll('.infographic-steps-divider');
   const meetTextFillRect = document.getElementById('meetTextFillRect');
@@ -2494,24 +2516,29 @@ lenis.stop();
   // ── Phase 1: Infographic heading ──────────────────────
   tl.to(heading, { opacity: 1, duration: 0.15, ease: 'power2.out' }, 0.72);
 
-  // ── Phase 2: Three columns fill up ──────────────────────
-  tl.to(steps[0], { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.85);
-  tl.to(fillBars[0], { width: '100%', duration: 0.3, ease: 'power1.inOut' }, 0.95);
+  // ── Phase 2: Four columns fill up ──────────────────────
+  tl.to(steps[0], { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 0.85);
+  tl.to(fillBars[0], { width: '100%', duration: 0.25, ease: 'power1.inOut' }, 0.93);
 
-  tl.to(dividers[0], { opacity: 1, scaleY: 1, duration: 0.15, ease: 'power2.out' }, 1.1);
+  tl.to(dividers[0], { opacity: 1, scaleY: 1, duration: 0.12, ease: 'power2.out' }, 1.05);
 
-  tl.to(steps[1], { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 1.2);
-  tl.to(fillBars[1], { width: '100%', duration: 0.3, ease: 'power1.inOut' }, 1.3);
+  tl.to(steps[1], { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 1.12);
+  tl.to(fillBars[1], { width: '100%', duration: 0.25, ease: 'power1.inOut' }, 1.2);
 
-  tl.to(dividers[1], { opacity: 1, scaleY: 1, duration: 0.15, ease: 'power2.out' }, 1.5);
+  tl.to(dividers[1], { opacity: 1, scaleY: 1, duration: 0.12, ease: 'power2.out' }, 1.35);
 
-  tl.to(steps[2], { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 1.6);
-  tl.to(fillBars[2], { width: '100%', duration: 0.3, ease: 'power1.inOut' }, 1.7);
+  tl.to(steps[2], { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 1.42);
+  tl.to(fillBars[2], { width: '100%', duration: 0.25, ease: 'power1.inOut' }, 1.5);
+
+  tl.to(dividers[2], { opacity: 1, scaleY: 1, duration: 0.12, ease: 'power2.out' }, 1.65);
+
+  tl.to(steps[3], { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 1.72);
+  tl.to(fillBars[3], { width: '100%', duration: 0.25, ease: 'power1.inOut' }, 1.8);
 
   // ── Phase 3: MEET NVRMND fills AFTER columns are done ───
-  tl.to(meetTextFillRect, { attr: { y: -93 }, duration: 0.3, ease: 'none' }, 2.0);
-  tl.to(meetTextFillRect, { attr: { y: -47 }, duration: 0.3, ease: 'none' }, 2.3);
-  tl.to(meetTextFillRect, { attr: { y: 0 }, duration: 0.4, ease: 'none' }, 2.6);
+  tl.to(meetTextFillRect, { attr: { y: -93 }, duration: 0.3, ease: 'none' }, 2.1);
+  tl.to(meetTextFillRect, { attr: { y: -47 }, duration: 0.3, ease: 'none' }, 2.4);
+  tl.to(meetTextFillRect, { attr: { y: 0 }, duration: 0.4, ease: 'none' }, 2.7);
 
   // Black hole stays visible — it remains at opacity 0.55 throughout.
   // It naturally scrolls away when the section unpins.
