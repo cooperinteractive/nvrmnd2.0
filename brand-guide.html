@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NVRMND &mdash; Brand Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#0A0A0A;--bg2:#111;--bg3:#161616;--card:#1a1a1a;
+--bg-warm:#1A1614;--surface:#141210;
+--tp:#F5F0EB;--ts:#8A8279;--ts2:#8A8279;--tm:#5C5650;
+--aw:#C4946A;--aw2:#D4A574;--water:#4A7C8A;--water2:#8FBDD0;
+--gd1:#C4946A;--gd2:#7BA7BC;
+--se:'Cormorant Garamond',Georgia,serif;
+--sa:'Inter',-apple-system,sans-serif;
+--nav-w:240px;--ease:cubic-bezier(.4,0,.2,1);
+--border-subtle:rgba(196,148,106,.06);--border-card:rgba(196,148,106,.04);
+--topbar-bg:rgba(10,10,10,.92);--sidebar-bg:rgba(10,10,10,.97);
+--particle-warm:196,148,106;--particle-cool:74,124,138;
+}
+/* === LIGHT THEME === */
+body.theme-light{
+--bg:#F0EAE3;--bg2:#E8E1D8;--bg3:#E0D8CE;--card:#EBE5DD;
+--bg-warm:#ECE3D8;--surface:#E8E1D8;
+--tp:#1A1614;--ts:#524A42;--ts2:#5C5550;--tm:#8A837B;
+--aw:#7A5A3A;--aw2:#9A7050;--water:#2A5A68;--water2:#4A7A88;
+--gd1:#7A5A3A;--gd2:#2A5A68;
+--border-subtle:rgba(122,90,58,.14);--border-card:rgba(122,90,58,.08);
+--topbar-bg:rgba(240,234,227,.96);--sidebar-bg:rgba(240,234,227,.98);
+--particle-warm:122,90,58;--particle-cool:42,90,104;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--tp);font-family:var(--sa);font-weight:300;line-height:1.7;overflow-x:hidden}
+::selection{background:rgba(196,148,106,.25);color:var(--tp)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(196,148,106,.4);border-radius:10px}
+
+/* === AMBIENT PARTICLES (CSS-only) === */
+.particles-container{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{position:absolute;border-radius:50%;pointer-events:none;opacity:0}
+@keyframes floatDown{
+0%{transform:translateY(-20px) translateX(0);opacity:0}
+10%{opacity:var(--p-o)}
+85%{opacity:var(--p-o)}
+100%{transform:translateY(calc(100vh + 40px)) translateX(var(--p-drift));opacity:0}
+}
+@keyframes floatDrift{
+0%{transform:translateY(-20px) translateX(0);opacity:0}
+12%{opacity:var(--p-o)}
+80%{opacity:var(--p-o)}
+100%{transform:translateY(calc(100vh + 60px)) translateX(var(--p-drift));opacity:0}
+}
+
+/* === TOP BAR === */
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:1000}
+.topbar-brand{display:flex;align-items:center;gap:14px}
+.topbar-logo{font-family:var(--sa);font-size:.8rem;font-weight:400;letter-spacing:.35em;text-transform:uppercase;color:var(--tp)}
+.topbar-divider{width:1px;height:20px;background:var(--tm);opacity:.4}
+.topbar-label{font-size:.65rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--ts2)}
+.topbar-actions{display:flex;align-items:center;gap:16px}
+
+/* presenter toggle */
+.presenter-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 16px;border:1px solid rgba(196,148,106,.2);border-radius:100px;transition:all .35s var(--ease);user-select:none}
+.presenter-toggle:hover{border-color:var(--aw);background:rgba(196,148,106,.06)}
+.presenter-toggle.active{border-color:var(--aw);background:rgba(196,148,106,.12)}
+.presenter-toggle .dot{width:8px;height:8px;border-radius:50%;background:var(--tm);transition:all .35s var(--ease)}
+.presenter-toggle.active .dot{background:var(--aw);box-shadow:0 0 12px rgba(196,148,106,.5)}
+.presenter-toggle .label{font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ts2);transition:color .35s var(--ease)}
+.presenter-toggle.active .label{color:var(--aw)}
+
+/* theme toggle */
+.theme-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 14px;border:1px solid var(--border-subtle);border-radius:100px;transition:all .35s var(--ease);user-select:none;background:transparent}
+.theme-toggle:hover{border-color:var(--aw);background:rgba(196,148,106,.06)}
+.theme-toggle-track{position:relative;width:36px;height:18px;border-radius:10px;background:var(--tm);transition:background .35s var(--ease);flex-shrink:0}
+.theme-toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--tp);transition:transform .35s var(--ease)}
+body.theme-light .theme-toggle-thumb{transform:translateX(18px)}
+body.theme-light .theme-toggle-track{background:var(--aw)}
+.theme-toggle-label{font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ts2)}
+
+/* light theme overrides for components with hardcoded rgba */
+/* ── LIGHT THEME: TYPOGRAPHY WEIGHT + SIZE OVERRIDES ── */
+/* The brand is built for dark. On light, thin (300) type vanishes.
+   We bump weights, slightly increase sizes, and darken secondary text. */
+body.theme-light{font-weight:400}
+body.theme-light .sec-title{font-weight:400;text-shadow:none;color:#1A1614}
+body.theme-light .sec-desc{font-weight:400;font-size:.9rem;color:#4A4440}
+body.theme-light .sec-eyebrow{font-weight:700;opacity:.85}
+body.theme-light .hero-title{font-weight:400;color:#1A1614}
+body.theme-light .hero-eyebrow{font-weight:600}
+body.theme-light .hero-sub{font-weight:400}
+body.theme-light .hero-date{font-weight:400}
+body.theme-light .manifesto-block p,
+body.theme-light .manifesto-opener p,
+body.theme-light .manifesto-cell p,
+body.theme-light .manifesto-span p,
+body.theme-light .manifesto-closer p{font-weight:400}
+body.theme-light .manifesto-closer-line{font-weight:400}
+body.theme-light .manifesto-closer-brand{font-weight:400}
+body.theme-light .pillar-name{font-weight:400}
+body.theme-light .pillar-desc{font-weight:400;color:#4A4440}
+body.theme-light .tension-box-text{font-weight:400}
+body.theme-light .voice-chip{font-weight:400}
+body.theme-light .voice-beat-name{font-weight:400}
+body.theme-light .voice-beat-desc{font-weight:400;color:#5A5550}
+body.theme-light .photo-name{font-weight:500}
+body.theme-light .photo-desc{font-weight:400;color:#4A4440}
+body.theme-light .nav-link{font-weight:500}
+body.theme-light .nav-group-label{font-weight:700}
+body.theme-light .topbar-logo{font-weight:500}
+body.theme-light .topbar-label{font-weight:500}
+body.theme-light .footer-logo{font-weight:500}
+body.theme-light .footer-sub{font-weight:400}
+body.theme-light .token-name{font-weight:500}
+body.theme-light .token-val{font-weight:400}
+body.theme-light .token-use{font-weight:400;color:#5A5550}
+body.theme-light .gel-cell-label{font-weight:500;color:#4A4440}
+body.theme-light .gel-row-label{font-weight:700}
+body.theme-light .type-sample-serif{font-weight:400}
+body.theme-light .type-sample-sans{font-weight:400}
+
+/* ── LIGHT THEME: HERO RING + LOGO VISIBILITY ── */
+/* Dark ring strokes are nearly invisible on cream. We boost stroke opacity,
+   add a subtle warm shadow behind the ring, and deepen the glow layers. */
+body.theme-light .hero-ring-svg{opacity:1;filter:drop-shadow(0 0 24px rgba(154,112,80,.18))}
+body.theme-light .hero-bg::before{background:radial-gradient(ellipse,rgba(154,112,80,.12) 0%,transparent 55%)}
+body.theme-light .hero-bg::after{background:radial-gradient(ellipse,rgba(58,106,120,.08) 0%,transparent 50%)}
+body.theme-light .hero-glow-blue{opacity:.06}
+body.theme-light .section-glow{opacity:.12}
+body.theme-light .particles-container{opacity:.25}
+
+/* ── LIGHT THEME: COMPONENT OVERRIDES ── */
+body.theme-light .guide-footer{border-top-color:var(--border-subtle)}
+body.theme-light .nav-link:hover{background:rgba(154,112,80,.06)}
+body.theme-light .nav-link.active{background:rgba(154,112,80,.1);color:var(--aw)}
+body.theme-light .gel-grid{background:rgba(154,112,80,.04);border-color:rgba(154,112,80,.08)}
+body.theme-light .gel-cell{background:#F0EAE3}
+body.theme-light .gel-cell:hover{background:#E8E1D8}
+body.theme-light .gel-row-label{background:#F0EAE3;border-top-color:rgba(122,90,58,.12)}
+body.theme-light .token-grid{background:rgba(122,90,58,.05);border-color:rgba(122,90,58,.1)}
+body.theme-light .token-cell{background:#F0EAE3}
+body.theme-light .token-group-label{background:#F0EAE3}
+body.theme-light .pillar-card,body.theme-light .photo-card{border-color:rgba(154,112,80,.12)}
+body.theme-light .tension-box{border-color:rgba(154,112,80,.12)}
+body.theme-light .manifesto-cell,body.theme-light .manifesto-span{border-color:rgba(154,112,80,.1)}
+body.theme-light .voice-chip{border-color:rgba(154,112,80,.1)}
+body.theme-light .voice-beats{background:rgba(154,112,80,.04)}
+body.theme-light .presenter-toggle{border-color:rgba(154,112,80,.2)}
+body.theme-light .theme-toggle{border-color:rgba(154,112,80,.18)}
+body.theme-light .sidebar-overlay.visible{background:rgba(245,240,235,.6)}
+body.theme-light ::selection{background:rgba(154,112,80,.22);color:var(--tp)}
+body.theme-light ::-webkit-scrollbar-thumb{background:rgba(154,112,80,.35)}
+body.theme-light .voice-split{border-color:rgba(154,112,80,.1)}
+body.theme-light .footer-waves path[stroke*="196,148,106"]{stroke:rgba(154,112,80,.18)}
+body.theme-light .footer-waves path[stroke*="74,124,138"]{stroke:rgba(58,106,120,.14)}
+body.theme-light .gel-cell svg text{fill:rgba(26,22,20,.9)}
+body.theme-light .color-swatch{border:1px solid rgba(154,112,80,.12)}
+body.theme-light .sidebar-toggle{border-color:rgba(154,112,80,.18)}
+body.theme-light .sidebar-toggle:hover{border-color:var(--aw);background:rgba(154,112,80,.06)}
+body.theme-light .sec-rule{background:linear-gradient(90deg,var(--aw),var(--water))}
+body.theme-light #systemRingSvg text{fill:var(--tp)}
+body.theme-light #systemRingSvg .sys-label{fill:var(--ts)}
+
+/* === SIDEBAR NAV === */
+.sidebar{position:fixed;top:56px;left:0;bottom:0;width:var(--nav-w);background:var(--sidebar-bg);border-right:1px solid var(--border-card);padding:32px 0;overflow-y:auto;z-index:900;transform:translateX(0);transition:transform .35s var(--ease);will-change:transform}
+.sidebar.collapsed{transform:translateX(calc(var(--nav-w) * -1))}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--tm);border-radius:2px}
+.nav-group{margin-bottom:28px;padding:0 24px}
+.nav-group-label{font-size:.55rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:.78rem;font-weight:400;color:var(--ts2);text-decoration:none;transition:all .3s var(--ease);position:relative;cursor:pointer}
+.nav-link:hover{color:var(--tp)}
+.nav-link.active{color:var(--aw)}
+.nav-link .nav-marker{width:3px;height:3px;border-radius:50%;background:var(--tm);transition:all .3s var(--ease);flex-shrink:0}
+.nav-link:hover .nav-marker{background:var(--ts)}
+.nav-link.active .nav-marker{background:var(--aw);box-shadow:0 0 8px rgba(196,148,106,.4)}
+
+/* sidebar toggle button — always visible in topbar */
+.sidebar-toggle{display:flex;align-items:center;justify-content:center;width:36px;height:36px;cursor:pointer;border:1px solid rgba(196,148,106,.15);border-radius:6px;background:transparent;transition:all .3s var(--ease);flex-shrink:0}
+.sidebar-toggle:hover{border-color:var(--aw);background:rgba(196,148,106,.06)}
+.sidebar-toggle svg{width:16px;height:16px;stroke:var(--ts2);stroke-width:1.5;fill:none;transition:stroke .3s var(--ease)}
+.sidebar-toggle:hover svg{stroke:var(--tp)}
+.sidebar-toggle.active{border-color:var(--aw);background:rgba(196,148,106,.08)}
+.sidebar-toggle.active svg{stroke:var(--aw)}
+
+/* noah badge */
+.noah-badge{display:inline-flex;align-items:center;gap:4px;margin-left:auto;padding:2px 8px;border-radius:100px;background:rgba(196,148,106,.08);opacity:0;transition:opacity .3s var(--ease)}
+.noah-badge .badge-dot{width:4px;height:4px;border-radius:50%;background:var(--aw)}
+.noah-badge .badge-text{font-size:.5rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--aw)}
+body.presenter-mode .noah-badge{opacity:1}
+body.presenter-mode .nav-link:not([data-noah]) .nav-marker{opacity:.25}
+body.presenter-mode .nav-link:not([data-noah]){opacity:.3}
+
+/* === MAIN CONTENT === */
+.main{margin-left:var(--nav-w);padding-top:56px;min-height:100vh;position:relative;z-index:1;transition:margin-left .35s var(--ease)}
+body.sidebar-hidden .main{margin-left:0}
+
+/* Sidebar overlay backdrop for mobile/small screens */
+.sidebar-overlay{position:fixed;inset:0;top:56px;background:rgba(0,0,0,.6);z-index:899;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.sidebar-overlay.visible{opacity:1;pointer-events:auto}
+
+/* === HERO COVER === */
+.hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-center{position:relative;display:flex;align-items:center;justify-content:center;width:clamp(220px,32vw,380px);height:clamp(220px,32vw,380px);flex-shrink:0}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg::before{content:'';position:absolute;top:28%;left:50%;transform:translate(-50%,-50%);width:280px;height:180px;background:radial-gradient(ellipse,rgba(196,148,106,.1) 0%,transparent 55%);filter:blur(60px);animation:heroGlow 8s ease-in-out infinite}
+.hero-bg::after{content:'';position:absolute;top:55%;left:40%;width:240px;height:170px;background:radial-gradient(ellipse,rgba(74,124,138,.08) 0%,transparent 50%);filter:blur(50px);animation:heroGlow 10s ease-in-out infinite 2s}
+/* Additional blue glow layer */
+.hero-glow-blue{position:absolute;top:40%;left:60%;width:200px;height:200px;background:radial-gradient(circle,rgba(74,124,138,.06) 0%,rgba(143,189,208,.02) 40%,transparent 70%);filter:blur(40px);animation:heroGlow 12s ease-in-out infinite 4s;z-index:0;pointer-events:none}
+@keyframes heroGlow{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:.9;transform:translate(-50%,-55%) scale(1.15)}}
+
+/* Ring wrapper — sits inside hero-center, fills it */
+.hero-ring-wrap{position:absolute;inset:0;z-index:1;perspective:800px}
+.hero-ring-svg{width:100%;height:100%;pointer-events:none;animation:bhRotate 30s linear infinite,bhShimmer 3s ease-in-out infinite;transition:transform .6s cubic-bezier(.25,.46,.45,.94)}
+@keyframes bhRotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+@keyframes bhShimmer{
+0%,100%{filter:brightness(1.1) drop-shadow(0 0 12px rgba(196,148,106,.25))}
+25%{filter:brightness(1.6) drop-shadow(0 0 28px rgba(196,148,106,.5))}
+50%{filter:brightness(1.2) drop-shadow(0 0 16px rgba(123,167,188,.3))}
+75%{filter:brightness(1.5) drop-shadow(0 0 24px rgba(212,165,116,.45))}
+}
+
+/* Content overlays hero-center — title is the absolute anchor at dead center */
+.hero-content{position:absolute;inset:0;z-index:3;text-align:center;overflow:visible;pointer-events:none}
+.hero-eyebrow{position:absolute;top:50%;left:50%;transform:translate(-50%,calc(-50% - 36px));font-family:var(--sa);font-size:.65rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--tp);opacity:.85;text-shadow:0 0 30px rgba(196,148,106,.15);white-space:nowrap}
+/* NVRMND in Inter (sans) — locked to exact center of the ring */
+.hero-title{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--sa);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;letter-spacing:.35em;color:var(--tp);line-height:.95;white-space:nowrap;margin:0}
+/* Orange/blue gradient glow behind the title */
+.hero-title::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:150%;background:radial-gradient(ellipse 60% 40% at 40% 50%,rgba(196,148,106,.08) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 65% 50%,rgba(74,124,138,.05) 0%,transparent 70%);filter:blur(30px);z-index:-1;pointer-events:none}
+.hero-divider{position:absolute;top:50%;left:50%;transform:translate(-50%,calc(-50% + 34px));width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--aw),transparent);opacity:.6}
+.hero-sub{position:absolute;top:50%;left:50%;transform:translate(-50%,calc(-50% + 48px));font-family:var(--sa);font-size:clamp(.65rem,1vw,.8rem);font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ts);white-space:nowrap}
+.hero-date{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);font-family:var(--sa);font-size:.6rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--tm);z-index:4;white-space:nowrap}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.4;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3;transform:translateX(-50%) translateY(0)}50%{opacity:.6;transform:translateX(-50%) translateY(6px)}}
+.hero-scroll span{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ts2)}
+.hero-scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--aw),transparent)}
+
+/* === SECTION RING DIVIDER === */
+.section-ring-divider{text-align:center;padding:24px 0;position:relative;z-index:1}
+.ring-divider-svg{width:160px;height:80px;opacity:.6}
+
+/* === SECTION BASE === */
+.section{padding:120px 64px;border-top:1px solid rgba(196,148,106,.04);position:relative;transition:opacity .5s var(--ease),filter .5s var(--ease)}
+.section-wide{max-width:960px}
+
+/* Section atmospheric glows */
+.section-glow{position:absolute;pointer-events:none;border-radius:50%;filter:blur(100px);opacity:.5}
+.glow-orange{background:radial-gradient(ellipse,rgba(196,148,106,.12) 0%,transparent 70%)}
+.glow-water{background:radial-gradient(ellipse,rgba(74,124,138,.14) 0%,rgba(143,189,208,.06) 40%,transparent 70%)}
+.glow-mixed{background:radial-gradient(ellipse at 40% 50%,rgba(196,148,106,.1) 0%,rgba(74,124,138,.1) 50%,transparent 80%)}
+.glow-water-strong{background:radial-gradient(ellipse,rgba(74,124,138,.18) 0%,rgba(143,189,208,.08) 35%,transparent 65%)}
+
+/* presenter dimming */
+body.presenter-mode .section:not([data-noah-section]){opacity:.12;filter:blur(1px);pointer-events:none}
+body.presenter-mode .section[data-noah-section]{opacity:1;filter:none}
+body.presenter-mode .section[data-noah-section]::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--aw),transparent)}
+
+/* Netflix-style section headers */
+.sec-eyebrow{font-family:var(--sa);font-size:.55rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;color:var(--aw);opacity:.7;margin-bottom:16px}
+.sec-title{font-family:var(--se);font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--tp);line-height:1.2;margin-bottom:20px}
+.sec-desc{font-family:var(--sa);font-size:.85rem;font-weight:300;color:var(--ts2);line-height:1.9;max-width:600px;margin-bottom:56px}
+.sec-rule{width:48px;height:1px;background:linear-gradient(to right,var(--aw),var(--water),transparent);margin-bottom:48px}
+
+/* === MANIFESTO === */
+.manifesto-block{max-width:680px;margin:0 auto}
+.manifesto-block p{font-family:var(--se);font-size:1.15rem;font-weight:300;line-height:2.1;color:var(--tp);margin-bottom:28px;opacity:.9}
+.manifesto-block em{color:var(--aw);font-style:italic}
+/* Manifesto: hero opener, 3-col body, centered closer */
+.manifesto-opener{text-align:center;max-width:520px;margin:0 auto 48px}
+.manifesto-opener p{font-family:var(--se);font-size:clamp(1.2rem,2.2vw,1.6rem);font-weight:300;line-height:1.7;color:var(--tp);margin-bottom:16px}
+.manifesto-opener em{color:var(--aw);font-style:italic}
+.manifesto-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;max-width:900px;margin:0 auto 48px}
+.manifesto-cell{background:var(--bg2);padding:32px 28px;position:relative}
+.manifesto-cell p{font-family:var(--se);font-size:.95rem;font-weight:300;line-height:1.9;color:var(--tp);margin:0}
+.manifesto-cell em{color:var(--aw);font-style:italic}
+.manifesto-cell-label{font-family:var(--sa);font-size:.5rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--aw);opacity:.5;margin-bottom:12px}
+.manifesto-span{grid-column:1/-1;background:transparent;text-align:center;padding:28px 32px}
+.manifesto-span p{font-family:var(--se);font-size:clamp(1.1rem,2vw,1.4rem);font-weight:300;line-height:1.7;color:var(--tp);margin:0}
+.manifesto-span em{color:var(--aw);font-style:italic}
+.manifesto-closer{text-align:center;max-width:400px;margin:0 auto;padding-top:32px;border-top:1px solid rgba(196,148,106,.06)}
+.manifesto-closer p{font-family:var(--se);font-size:clamp(1.1rem,2vw,1.4rem);font-weight:300;line-height:1.7;color:var(--tp);margin-bottom:14px}
+.manifesto-closer em{color:var(--aw);font-style:italic}
+@media(max-width:768px){.manifesto-body{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.manifesto-body{grid-template-columns:1fr}}
+
+/* === PILLAR CARDS === */
+.pillar-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:64px}
+.pillar-card{background:transparent;padding:40px 32px 40px 40px;position:relative;overflow:visible;transition:all .4s var(--ease);border-left:1px solid rgba(196,148,106,.08)}
+.pillar-card:hover{border-left-color:var(--aw)}
+.pillar-card .pillar-icon{position:absolute;top:32px;right:24px;width:48px;height:48px;opacity:.4;transition:opacity .4s var(--ease)}
+.pillar-card:hover .pillar-icon{opacity:.8}
+.pillar-num{font-family:var(--sa);font-size:.5rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--aw);opacity:.6;margin-bottom:16px}
+.pillar-name{font-family:var(--se);font-size:1.2rem;font-weight:300;color:var(--tp);margin-bottom:14px}
+.pillar-desc{font-family:var(--sa);font-size:.78rem;font-weight:300;color:var(--ts2);line-height:1.8}
+
+/* === TENSION MAP === */
+.tension-grid{display:grid;grid-template-columns:1fr 80px 1fr;gap:0;align-items:stretch;margin-bottom:64px}
+.tension-box{background:transparent;padding:36px 32px;position:relative;border:1px solid rgba(196,148,106,.06)}
+.tension-box::after{content:'';position:absolute;top:-1px;width:60px;height:2px;background:linear-gradient(to right,var(--aw),transparent)}
+.tension-box:first-child::after{left:0}
+.tension-box:last-child::after{right:0;left:auto;background:linear-gradient(to left,var(--water),transparent)}
+.tension-box-title{font-family:var(--sa);font-size:.55rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--aw);opacity:.6;margin-bottom:14px}
+.tension-box-text{font-family:var(--se);font-size:1rem;font-weight:300;color:var(--tp);line-height:1.7}
+.tension-vs{display:flex;align-items:center;justify-content:center;background:var(--bg);font-family:var(--sa);font-size:.55rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--tm)}
+
+/* === COLOR PALETTE === */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;margin-bottom:48px}
+.color-card{background:var(--bg2);padding:24px;transition:transform .3s var(--ease)}
+.color-card:hover{transform:translateY(-2px)}
+.color-swatch{width:100%;height:100px;border-radius:4px;margin-bottom:16px}
+.color-name{font-family:var(--sa);font-size:.75rem;font-weight:500;color:var(--tp);margin-bottom:4px}
+.color-hex{font-family:var(--sa);font-size:.65rem;font-weight:400;color:var(--ts2);letter-spacing:.05em}
+.color-role{font-family:var(--sa);font-size:.6rem;font-weight:400;color:var(--tm);margin-top:6px}
+
+/* === TYPOGRAPHY === */
+.type-specimen{margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(196,148,106,.04)}
+.type-label{font-family:var(--sa);font-size:.55rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--aw);opacity:.6;margin-bottom:20px}
+.type-sample-serif{font-family:var(--se);font-size:clamp(2rem,4vw,3.5rem);font-weight:300;color:var(--tp);line-height:1.2;margin-bottom:12px}
+.type-sample-sans{font-family:var(--sa);font-size:1rem;font-weight:300;color:var(--tp);line-height:1.7;margin-bottom:12px}
+.type-meta{font-family:var(--sa);font-size:.65rem;font-weight:400;color:var(--ts2);letter-spacing:.05em}
+
+/* === VOICE VOCABULARY (compact redesign) === */
+.voice-split{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;margin-bottom:40px;position:relative}
+.voice-col{padding:24px 32px}
+.voice-col-title{font-family:var(--sa);font-size:.55rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.voice-col-title.yes{color:var(--aw)}
+.voice-col-title.yes::before{content:'';width:16px;height:1px;background:var(--aw)}
+.voice-col-title.no{color:var(--water)}
+.voice-col-title.no::before{content:'';width:16px;height:1px;background:var(--water)}
+.voice-divider{background:linear-gradient(to bottom,transparent,rgba(196,148,106,.15),transparent);width:1px}
+.voice-words{display:flex;flex-wrap:wrap;gap:6px 10px}
+.voice-chip{font-family:var(--se);font-size:.88rem;font-weight:300;color:var(--tp);padding:5px 14px;border:1px solid rgba(196,148,106,.06);border-radius:2px;transition:all .3s var(--ease);white-space:nowrap}
+.voice-col:first-child .voice-chip:hover{border-color:var(--aw);background:rgba(196,148,106,.04)}
+.voice-col:last-child .voice-chip{color:var(--ts2);text-decoration:line-through;text-decoration-color:rgba(74,124,138,.3);border-color:rgba(74,124,138,.06)}
+.voice-col:last-child .voice-chip:hover{border-color:var(--water);background:rgba(74,124,138,.04)}
+.voice-beats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(196,148,106,.04)}
+.voice-beat{background:var(--bg);padding:20px 20px;position:relative}
+.voice-beat::before{content:attr(data-num);position:absolute;top:12px;right:14px;font-family:var(--sa);font-size:.5rem;font-weight:600;letter-spacing:.15em;color:var(--tm)}
+.voice-beat-name{font-family:var(--se);font-size:.95rem;font-weight:300;color:var(--tp);margin-bottom:6px}
+.voice-beat-desc{font-family:var(--sa);font-size:.68rem;font-weight:300;color:var(--ts2);line-height:1.6}
+
+/* === SIGNATURE ELEMENTS === */
+.sig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.sig-card{background:transparent;padding:32px 24px;text-align:center;transition:all .4s var(--ease);position:relative;border:1px solid rgba(196,148,106,.04);border-radius:50% 50% 4px 4px / 20% 20% 4px 4px}
+.sig-card:hover{border-color:rgba(196,148,106,.15);background:rgba(196,148,106,.02)}
+.sig-icon{margin-bottom:16px;opacity:.7;display:flex;justify-content:center}
+.sig-icon svg{width:48px;height:48px}
+.sig-name{font-family:var(--se);font-size:1rem;font-weight:300;color:var(--tp);margin-bottom:8px}
+.sig-desc{font-family:var(--sa);font-size:.72rem;font-weight:300;color:var(--ts2);line-height:1.7}
+
+/* === MOTION === */
+.motion-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:48px}
+.motion-card{background:transparent;padding:36px 32px;border-left:1px solid rgba(196,148,106,.08);transition:border-color .3s var(--ease)}
+.motion-card:hover{border-left-color:var(--aw)}
+.motion-name{font-family:var(--sa);font-size:.8rem;font-weight:500;color:var(--tp);margin-bottom:8px}
+.motion-desc{font-family:var(--sa);font-size:.75rem;font-weight:300;color:var(--ts2);line-height:1.8}
+.motion-bar{width:100%;height:3px;background:var(--bg);border-radius:2px;margin-top:16px;overflow:hidden}
+.motion-bar-fill{height:100%;border-radius:2px;background:linear-gradient(to right,var(--aw),var(--water),transparent);animation:motionPulse 3s ease-in-out infinite}
+@keyframes motionPulse{0%{width:0}50%{width:100%}100%{width:0}}
+
+/* === PHOTOGRAPHY === */
+.photo-principles{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:48px}
+.photo-card{background:transparent;padding:36px 32px;border-left:1px solid rgba(74,124,138,.08);transition:border-color .3s var(--ease)}
+.photo-card:hover{border-left-color:var(--water)}
+.photo-name{font-family:var(--sa);font-size:.8rem;font-weight:500;color:var(--tp);margin-bottom:8px}
+.photo-desc{font-family:var(--sa);font-size:.75rem;font-weight:300;color:var(--ts2);line-height:1.8}
+
+/* === DESIGN TOKENS (compact grid) === */
+.token-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(196,148,106,.04);margin-bottom:32px}
+.token-cell{background:var(--bg);padding:16px 18px;cursor:pointer;transition:all .3s var(--ease)}
+.token-cell:hover{background:var(--bg2)}
+.token-name{font-family:'SF Mono',ui-monospace,monospace;font-size:.65rem;font-weight:500;color:var(--tp);margin-bottom:4px;letter-spacing:.02em}
+.token-val{font-family:var(--sa);font-size:.7rem;font-weight:400;color:var(--aw);margin-bottom:2px}
+.token-use{font-family:var(--sa);font-size:.6rem;font-weight:300;color:var(--tm);line-height:1.4}
+.token-group-label{grid-column:1/-1;background:var(--bg);padding:10px 18px;font-family:var(--sa);font-size:.5rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--ts2);border-top:1px solid rgba(196,148,106,.08)}
+
+/* === FOOTER === */
+.guide-footer{padding:80px 64px;border-top:1px solid rgba(196,148,106,.04);text-align:center;position:relative;overflow:hidden}
+.guide-footer::before{content:'';position:absolute;bottom:-40%;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(ellipse at 40% 60%,rgba(74,124,138,.06) 0%,transparent 50%),radial-gradient(ellipse at 60% 40%,rgba(196,148,106,.04) 0%,transparent 50%);filter:blur(60px);pointer-events:none}
+.footer-logo{font-family:var(--sa);font-size:.8rem;font-weight:400;letter-spacing:.4em;text-transform:uppercase;color:var(--tp);margin-bottom:12px}
+.footer-sub{font-family:var(--sa);font-size:.6rem;font-weight:300;letter-spacing:.15em;color:var(--tm)}
+
+/* === RESPONSIVE === */
+
+/* Tablet & narrow desktop — sidebar still available but can be toggled */
+@media(max-width:1024px){
+.section{padding:80px 32px}
+.pillar-row{grid-template-columns:repeat(2,1fr)}
+.tension-grid{grid-template-columns:1fr}
+.tension-vs{padding:16px}
+.sig-grid{grid-template-columns:repeat(2,1fr)!important}
+}
+
+/* Small tablet / large phone portrait */
+@media(max-width:768px){
+.section{padding:64px 24px}
+.topbar{padding:0 16px;height:50px}
+.topbar-label{display:none}
+.topbar-divider{display:none}
+.hero-title{font-size:clamp(2.5rem,10vw,5rem);letter-spacing:.2em}
+.hero-eyebrow{font-size:.55rem;letter-spacing:.2em}
+.hero-date{bottom:80px;font-size:.5rem}
+.hero-scroll{bottom:36px}
+.sec-title{font-size:clamp(1.6rem,3vw,2.2rem)}
+.color-grid{grid-template-columns:repeat(2,1fr)}
+.motion-grid,.photo-principles{grid-template-columns:1fr}
+.voice-split{grid-template-columns:1fr;gap:0}.voice-divider{height:1px;width:100%;background:linear-gradient(to right,transparent,rgba(196,148,106,.15),transparent)}.voice-beats{grid-template-columns:repeat(2,1fr)}
+.token-grid{grid-template-columns:repeat(2,1fr)}
+.type-controls{grid-template-columns:repeat(2,1fr)}
+.type-font-toggle{flex-wrap:wrap}
+.sidebar-keys{display:none}
+#systemRingSvg{width:300px;height:300px}
+}
+
+/* Phone portrait */
+@media(max-width:480px){
+.section{padding:48px 16px}
+.pillar-row,.sig-grid{grid-template-columns:1fr!important}
+.voice-beats{grid-template-columns:1fr}
+.hero-title{font-size:clamp(2rem,9vw,3.5rem);letter-spacing:.12em}
+.hero-sub{font-size:.6rem;margin-bottom:24px}
+.hero-ring-wrap{width:clamp(200px,70vw,300px);height:clamp(200px,70vw,300px)}
+.hero-center{width:clamp(200px,70vw,300px);height:clamp(200px,70vw,300px)}
+.sec-desc{font-size:.8rem}
+.manifesto-block p{font-size:1rem}
+.guide-footer{padding:48px 16px}
+.color-grid{grid-template-columns:1fr}
+.type-controls{grid-template-columns:1fr}
+#systemRingSvg{width:250px;height:250px}
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+.particle{display:none}
+}
+
+/* Landscape phone (iPhone landscape: ~667×375 or ~812×375 for notch models) */
+@media(max-height:500px) and (orientation:landscape){
+.hero{height:100vh;min-height:320px}
+.hero-ring-wrap{width:clamp(160px,30vh,240px);height:clamp(160px,30vh,240px)}
+.hero-center{width:clamp(160px,30vh,240px);height:clamp(160px,30vh,240px)}
+.hero-title{font-size:clamp(1.8rem,6vw,3rem);letter-spacing:.15em;margin-bottom:12px}
+.hero-eyebrow{font-size:.5rem;margin-bottom:12px;letter-spacing:.2em}
+.hero-divider{margin-bottom:12px}
+.hero-sub{font-size:.55rem;margin-bottom:16px}
+.hero-date{bottom:50px;font-size:.45rem}
+.hero-scroll{bottom:16px}
+.hero-scroll-line{height:20px}
+.section{padding:48px 24px}
+.topbar{height:44px;padding:0 16px}
+.sidebar{top:44px}
+.main{padding-top:44px}
+.sec-title{font-size:1.5rem}
+.pillar-row{grid-template-columns:repeat(2,1fr)}
+.sig-grid{grid-template-columns:repeat(2,1fr)!important}
+}
+
+/* Very short landscape (small iPhone SE landscape ~568×320) */
+@media(max-height:380px) and (orientation:landscape){
+.hero-ring-wrap{width:140px;height:140px}
+.hero-center{width:140px;height:140px}
+.hero-title{font-size:1.5rem;letter-spacing:.1em;margin-bottom:8px}
+.hero-eyebrow{font-size:.45rem;margin-bottom:8px}
+.hero-divider{margin-bottom:8px}
+.hero-sub{display:none}
+.hero-date{bottom:40px}
+}
+
+/* === WAVE KEYFRAMES === */
+@keyframes waveShift1{0%,100%{transform:translateX(0)}50%{transform:translateX(-25%)}}
+@keyframes waveShift2{0%,100%{transform:translateX(-10%)}50%{transform:translateX(-35%)}}
+@keyframes waveShift3{0%,100%{transform:translateX(-5%)}50%{transform:translateX(-20%)}}
+
+/* === HERO FADE BOTTOM === */
+.hero-fade-bottom{position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:2}
+
+/* === MANIFESTO PIN === */
+.manifesto-pin-wrap{overflow:visible;position:relative}
+.manifesto-pin-inner{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+.manifesto-closer{text-align:center;max-width:400px;margin:48px auto 0;opacity:0}
+.manifesto-closer-rule{width:48px;height:1px;background:linear-gradient(90deg,var(--aw),var(--water));margin:0 auto 32px;opacity:.4}
+.manifesto-closer-line{font-family:var(--se);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:var(--aw);margin-bottom:8px}
+.manifesto-closer-brand{font-family:var(--sa);font-size:clamp(1.2rem,2vw,1.6rem);font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:var(--tp);margin-bottom:12px}
+.manifesto-closer-tagline{font-family:var(--se);font-size:clamp(1rem,1.5vw,1.3rem);font-weight:300;font-style:italic;color:var(--ts)}
+
+/* === ENHANCED CARDS === */
+.pillar-card:hover,.motion-card:hover,.photo-card:hover{box-shadow:0 0 30px rgba(196,148,106,.06)}
+
+/* === SECTION TITLE TEXT SHADOW === */
+.sec-title{text-shadow:0 1px 15px rgba(0,0,0,.8),0 0 40px rgba(10,10,10,.9)}
+
+/* === TENSION VS GLOW === */
+.tension-vs{transition:all .6s var(--ease)}
+
+/* === GRAPHIC ELEMENTS LIBRARY === */
+.gel-section{padding:160px 0 120px}
+.gel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(196,148,106,.03);border:1px solid rgba(196,148,106,.04);margin-top:48px}
+.gel-cell{background:var(--bg);padding:40px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:220px;transition:background .4s var(--ease)}
+.gel-cell:hover{background:rgba(26,22,20,.6)}
+.gel-cell svg{max-width:100%;height:auto}
+.gel-cell-label{font-family:var(--sa);font-size:.65rem;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ts2);text-align:center;margin-top:auto}
+.gel-row-label{grid-column:1/-1;padding:24px 32px 8px;font-family:var(--sa);font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--aw);background:var(--bg);border-top:1px solid rgba(196,148,106,.06)}
+.gel-cell--wide{grid-column:span 2}
+.gel-cell--full{grid-column:1/-1;padding:48px 40px}
+@media(max-width:1024px){.gel-grid{grid-template-columns:repeat(3,1fr)}.gel-cell--wide{grid-column:span 1}}
+@media(max-width:768px){.gel-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.gel-grid{grid-template-columns:1fr}.gel-cell--wide{grid-column:1}}
+
+/* === FOOTER WAVES === */
+.footer-waves{position:relative;height:80px;overflow:hidden;margin-top:-40px}
+.footer-wave{position:absolute;bottom:0;left:0;width:200%;height:100%}
+.footer-wave path{fill:none;stroke-width:1}
+
+/* === COPY TOAST === */
+.copy-toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg-warm);border:1px solid rgba(196,148,106,.2);padding:12px 24px;font-family:var(--sa);font-size:.75rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--aw);opacity:0;pointer-events:none;z-index:2000;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+
+/* === COLOR CARD INTERACTIVE === */
+.color-card{cursor:pointer;position:relative}
+.color-card:hover .color-copy-hint{opacity:1}
+.color-copy-hint{position:absolute;top:8px;right:8px;font-family:var(--sa);font-size:.5rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ts);opacity:0;transition:opacity .3s var(--ease)}
+.color-contrast{font-family:var(--sa);font-size:.55rem;color:var(--tm);margin-top:4px;letter-spacing:.05em}
+
+/* === TYPOGRAPHY PLAYGROUND === */
+.type-playground{background:var(--bg2);border:1px solid rgba(196,148,106,.04);padding:32px;margin-top:32px}
+.type-playground-title{font-family:var(--sa);font-size:.55rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--aw);opacity:.5;margin-bottom:20px}
+.type-controls{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.type-control{display:flex;flex-direction:column;gap:6px}
+.type-control label{font-family:var(--sa);font-size:.55rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ts)}
+.type-control input[type="range"]{-webkit-appearance:none;width:100%;height:3px;background:var(--tm);border-radius:2px;outline:none;cursor:pointer}
+.type-control input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--aw);cursor:pointer}
+.type-control .control-value{font-family:'SF Mono',monospace;font-size:.6rem;color:var(--ts2)}
+.type-preview-area{min-height:80px;padding:24px;background:var(--bg);border:1px solid rgba(196,148,106,.04)}
+.type-preview-text{transition:all .15s ease}
+.type-font-toggle{display:flex;gap:8px;margin-bottom:16px}
+.type-font-btn{padding:6px 16px;font-family:var(--sa);font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ts);background:transparent;border:1px solid rgba(196,148,106,.1);cursor:pointer;transition:all .3s var(--ease)}
+.type-font-btn.active{color:var(--aw);border-color:var(--aw);background:rgba(196,148,106,.06)}
+
+/* === TOKEN TABLE INTERACTIVE === */
+.token-copy-all{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;font-family:var(--sa);font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ts);background:transparent;border:1px solid rgba(196,148,106,.15);cursor:pointer;transition:all .3s var(--ease);margin-top:16px}
+.token-copy-all:hover{color:var(--aw);border-color:var(--aw);background:rgba(196,148,106,.06)}
+
+/* === SIDEBAR PROGRESS === */
+.sidebar-progress{position:absolute;top:0;left:0;width:3px;height:0%;background:linear-gradient(180deg,var(--aw),var(--water));transition:height .1s linear;opacity:.6}
+
+/* === KEYBOARD HINTS === */
+.sidebar-keys{padding:12px 24px;margin-top:auto;border-top:1px solid rgba(196,148,106,.04)}
+.sidebar-keys-text{font-family:var(--sa);font-size:.45rem;font-weight:400;letter-spacing:.1em;color:var(--tm);line-height:1.6}
+.sidebar-keys-text kbd{display:inline-block;padding:1px 5px;background:rgba(196,148,106,.06);border:1px solid rgba(196,148,106,.1);border-radius:3px;font-family:'SF Mono',monospace;font-size:.4rem;color:var(--ts)}
+
+/* === LENIS SMOOTH SCROLL === */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+</style>
+</head>
+<body>
+
+<!-- COPY TOAST -->
+<div class="copy-toast" id="copyToast">Copied</div>
+
+<!-- AMBIENT PARTICLES -->
+<div class="particles-container" id="particlesContainer"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <button class="sidebar-toggle active" id="sidebarToggle" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <span class="topbar-logo">NVRMND</span>
+    <span class="topbar-divider"></span>
+    <span class="topbar-label">Brand Center</span>
+  </div>
+  <div class="topbar-actions">
+    <div class="theme-toggle" id="themeToggle">
+      <div class="theme-toggle-track"><div class="theme-toggle-thumb"></div></div>
+      <span class="theme-toggle-label">Light</span>
+    </div>
+    <div class="presenter-toggle" id="presenterToggle">
+      <span class="dot"></span>
+      <span class="label">Narrative</span>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR OVERLAY (for when sidebar is open on small screens) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SIDEBAR NAV -->
+<nav class="sidebar" id="sidebarNav">
+  <div class="sidebar-progress" id="sidebarProgress"></div>
+  <div class="nav-group">
+    <div class="nav-group-label">Foundation</div>
+    <a class="nav-link" data-target="manifesto" data-noah>
+      <span class="nav-marker"></span>Manifesto
+      <span class="noah-badge"><span class="badge-dot"></span><span class="badge-text">N</span></span>
+    </a>
+    <a class="nav-link" data-target="pillars" data-noah>
+      <span class="nav-marker"></span>Narrative Pillars
+      <span class="noah-badge"><span class="badge-dot"></span><span class="badge-text">N</span></span>
+    </a>
+    <a class="nav-link" data-target="tension" data-noah>
+      <span class="nav-marker"></span>The Tension
+      <span class="noah-badge"><span class="badge-dot"></span><span class="badge-text">N</span></span>
+    </a>
+    <a class="nav-link" data-target="voice" data-noah>
+      <span class="nav-marker"></span>Voice &amp; Language
+      <span class="noah-badge"><span class="badge-dot"></span><span class="badge-text">N</span></span>
+    </a>
+    <a class="nav-link" data-target="foundation" data-noah>
+      <span class="nav-marker"></span>Strategic Foundation
+      <span class="noah-badge"><span class="badge-dot"></span><span class="badge-text">N</span></span>
+    </a>
+    <a class="nav-link" data-target="system" data-noah>
+      <span class="nav-marker"></span>The Integrated System
+      <span class="noah-badge"><span class="badge-dot"></span><span class="badge-text">N</span></span>
+    </a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Visual Identity</div>
+    <a class="nav-link" data-target="palette"><span class="nav-marker"></span>Color Palette</a>
+    <a class="nav-link" data-target="typography"><span class="nav-marker"></span>Typography</a>
+    <a class="nav-link" data-target="elements"><span class="nav-marker"></span>Graphic Elements</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Application</div>
+    <a class="nav-link" data-target="photography"><span class="nav-marker"></span>Photography</a>
+    <a class="nav-link" data-target="tokens"><span class="nav-marker"></span>Design Tokens</a>
+  </div>
+  <div class="sidebar-keys">
+    <div class="sidebar-keys-text"><kbd>&uarr;</kbd> <kbd>&darr;</kbd> Navigate sections<br><kbd>1</kbd>&ndash;<kbd>9</kbd> Jump to section<br><kbd>Esc</kbd> Close sidebar</div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-glow-blue"></div>
+    <!-- hero-center: flex box that sizes to the ring and centers everything -->
+    <div class="hero-center">
+      <div class="hero-ring-wrap" id="heroRingWrap"><svg class="hero-ring-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="bhGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="rgba(212,165,116,0.85)"/>
+<stop offset="25%" stop-color="rgba(196,148,106,0.08)"/>
+<stop offset="50%" stop-color="rgba(143,189,208,0.75)"/>
+<stop offset="75%" stop-color="rgba(123,167,188,0.08)"/>
+<stop offset="100%" stop-color="rgba(212,165,116,0.85)"/>
+</linearGradient>
+<linearGradient id="bhGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="rgba(212,165,116,0.6)"/>
+<stop offset="50%" stop-color="rgba(196,148,106,0.03)"/>
+<stop offset="100%" stop-color="rgba(143,189,208,0.5)"/>
+</linearGradient>
+<filter id="bhGlow">
+<feGaussianBlur stdDeviation="8" result="blur"/>
+<feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+</defs>
+<ellipse cx="250" cy="250" rx="220" ry="220" stroke="url(#bhGrad1)" stroke-width="3" filter="url(#bhGlow)"/>
+<ellipse cx="250" cy="250" rx="185" ry="185" stroke="url(#bhGrad2)" stroke-width="2" opacity="0.7"/>
+<ellipse cx="250" cy="250" rx="240" ry="240" stroke="rgba(196,148,106,0.12)" stroke-width="1"/>
+</svg></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Everything is inside.</div>
+        <h1 class="hero-title">NVRMND</h1>
+        <div class="hero-divider"></div>
+        <p class="hero-sub">Brand Center</p>
+      </div>
+    </div>
+    <span class="hero-date">Version 3.0 &mdash; March 2026</span>
+    <div class="hero-scroll">
+      <span>Explore</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+    <div class="hero-fade-bottom"></div>
+  </section>
+
+  <!-- MANIFESTO (pinned scroll sequence) -->
+  <section class="section manifesto-pin-wrap" id="manifesto" data-noah-section>
+    <div class="section-glow glow-orange" style="width:500px;height:400px;top:-100px;right:-150px"></div>
+    <div class="manifesto-pin-inner">
+      <div class="section-wide">
+        <div class="manifesto-header">
+          <span class="sec-eyebrow">01 &mdash; Brand Manifesto</span>
+          <h2 class="sec-title">Everything Is Inside</h2>
+          <div class="sec-rule"></div>
+        </div>
+        <div class="manifesto-opener">
+          <p>You feel it.</p>
+          <p><em>The pressure, the pace, the constant pull.</em><br>More responsibility. More decisions. More demand.</p>
+          <p>The noise doesn't stop. And there is no shortage of solutions. Just quieter versions of the same thing.</p>
+        </div>
+        <div class="manifesto-body">
+          <div class="manifesto-cell">
+            <div class="manifesto-cell-label">The Offer</div>
+            <p>We don't offer noise; we offer <em>stillness</em>. Because everything you need is already inside. It always has been.</p>
+          </div>
+          <div class="manifesto-cell">
+            <div class="manifesto-cell-label">The Way Back</div>
+            <p>NVRMND is <em>the way back</em>. Breath to reclaim center. Cold to expand. Heat to release. Stillness to find yourself again.</p>
+          </div>
+          <div class="manifesto-cell">
+            <div class="manifesto-cell-label">The Cascade</div>
+            <p>Presence builds capacity. Capacity builds resilience. Resilience changes <em>everything</em>.</p>
+          </div>
+          <div class="manifesto-span">
+            <p>The space does its work, then gets out of the way. What remains is you &mdash; <em>clear, steady, resolved</em>.</p>
+          </div>
+          <div class="manifesto-cell">
+            <div class="manifesto-cell-label">The Truth</div>
+            <p>There is nothing to fix. Only a <em>return to yourself</em>.</p>
+          </div>
+          <div class="manifesto-cell">
+            <div class="manifesto-cell-label">The Outcome</div>
+            <p>Self-regulated. Self-directed. <em>Fully anchored.</em></p>
+          </div>
+          <div class="manifesto-cell">
+            <div class="manifesto-cell-label">The Promise</div>
+            <p><em>You.</em><br>NVRMND. Everything is inside.</p>
+          </div>
+        </div>
+        <div class="manifesto-closer">
+          <div class="manifesto-closer-rule"></div>
+          <p class="manifesto-closer-line"><em>You.</em></p>
+          <p class="manifesto-closer-brand">NVRMND.</p>
+          <p class="manifesto-closer-tagline">Everything is inside.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section divider: decorative ring arcs -->
+  <div class="section-ring-divider fade-in">
+    <svg viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="ring-divider-svg">
+      <defs>
+        <linearGradient id="rdGrad1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#C4946A" stop-opacity="0"/><stop offset="50%" stop-color="#C4946A" stop-opacity=".3"/><stop offset="100%" stop-color="#4A7C8A" stop-opacity="0"/></linearGradient>
+        <linearGradient id="rdGrad2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4A7C8A" stop-opacity="0"/><stop offset="50%" stop-color="#4A7C8A" stop-opacity=".2"/><stop offset="100%" stop-color="#C4946A" stop-opacity="0"/></linearGradient>
+      </defs>
+      <path d="M 30,80 A 70,70 0 0 1 170,80" stroke="url(#rdGrad1)" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M 50,80 A 50,50 0 0 1 150,80" stroke="url(#rdGrad2)" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+      <path d="M 70,80 A 30,30 0 0 1 130,80" stroke="url(#rdGrad1)" stroke-width="1" stroke-linecap="round" opacity=".3"/>
+    </svg>
+  </div>
+
+  <!-- NARRATIVE PILLARS -->
+  <section class="section" id="pillars" data-noah-section>
+    <div class="section-glow glow-mixed" style="width:600px;height:500px;top:50px;left:-200px"></div>
+    <div class="section-glow glow-water" style="width:400px;height:350px;bottom:-80px;right:-100px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">02 &mdash; Narrative Pillars</span>
+      <h2 class="sec-title">The Four Pillars</h2>
+      <p class="sec-desc">The strategic narrative framework distilled from the approved manifesto. Each pillar maps the journey from pressure and noise to presence and anchored autonomy.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="pillar-row fade-in">
+      <div class="pillar-card">
+        <svg class="pillar-icon" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="pG1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C4946A"/><stop offset="100%" stop-color="#D4A87A"/></linearGradient></defs><circle cx="32" cy="32" r="18" stroke="url(#pG1)" stroke-width="1.5"/></svg>
+        <div class="pillar-num">Pillar 01</div>
+        <div class="pillar-name">The Protagonist</div>
+        <div class="pillar-desc">The high-performing human who feels the pressure, the pace, the constant pull. Carrying more responsibility, more decisions, more demand &mdash; and ready for something that isn't just a quieter version of the same thing.</div>
+      </div>
+      <div class="pillar-card">
+        <svg class="pillar-icon" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="pG2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C4946A"/><stop offset="100%" stop-color="#4A7C8A"/></linearGradient></defs><circle cx="32" cy="32" r="14" stroke="url(#pG2)" stroke-width="1.5"/><circle cx="32" cy="32" r="22" stroke="url(#pG2)" stroke-width="1.5" opacity=".5"/></svg>
+        <div class="pillar-num">Pillar 02</div>
+        <div class="pillar-name">The Conflict</div>
+        <div class="pillar-desc">The noise that doesn't stop. An endless supply of solutions that never solve anything &mdash; just quieter versions of the same distraction. The constant pull away from what's already inside.</div>
+      </div>
+      <div class="pillar-card">
+        <svg class="pillar-icon" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="pG3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C4946A"/><stop offset="100%" stop-color="#D4A87A"/></linearGradient></defs><circle cx="32" cy="32" r="10" stroke="url(#pG3)" stroke-width="1.5"/><circle cx="32" cy="32" r="18" stroke="url(#pG3)" stroke-width="1.5" opacity=".6"/><circle cx="32" cy="32" r="25" stroke="url(#pG3)" stroke-width="1.5" opacity=".3"/></svg>
+        <div class="pillar-num">Pillar 03</div>
+        <div class="pillar-name">The Resolution</div>
+        <div class="pillar-desc">The way back. Breath to reclaim center. Cold to expand. Heat to release. Stillness to find yourself again. A space that does its work, then gets out of the way.</div>
+      </div>
+      <div class="pillar-card">
+        <svg class="pillar-icon" viewBox="0 0 64 64" fill="none"><defs><linearGradient id="pG4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C4946A"/><stop offset="100%" stop-color="#4A7C8A"/></linearGradient><radialGradient id="pG4glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C4946A" stop-opacity=".15"/><stop offset="100%" stop-color="#C4946A" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="8" fill="url(#pG4glow)"/><circle cx="32" cy="32" r="8" stroke="url(#pG4)" stroke-width="1.5"/><circle cx="32" cy="32" r="14" stroke="url(#pG4)" stroke-width="1.5" opacity=".7"/><circle cx="32" cy="32" r="20" stroke="url(#pG4)" stroke-width="1.5" opacity=".45"/><circle cx="32" cy="32" r="26" stroke="url(#pG4)" stroke-width="1.5" opacity=".2"/></svg>
+        <div class="pillar-num">Pillar 04</div>
+        <div class="pillar-name">The Artifact</div>
+        <div class="pillar-desc">What remains: clear, steady, resolved. Self-regulated. Self-directed. Fully anchored. Presence that builds capacity, capacity that builds resilience, resilience that changes everything.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TENSION -->
+  <section class="section" id="tension" data-noah-section>
+    <div class="section-glow glow-water" style="width:400px;height:350px;bottom:-80px;right:-100px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">03 &mdash; The Tension</span>
+      <h2 class="sec-title">Mapping the Conflict</h2>
+      <p class="sec-desc">The pressure, the pace, the constant pull &mdash; and no shortage of solutions that are just quieter versions of the same noise. These tensions inform every brand decision.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="tension-grid fade-in">
+      <div class="tension-box">
+        <div class="tension-box-title">The Noise</div>
+        <div class="tension-box-text">The pressure, the pace, the constant pull. More responsibility, more decisions, more demand. And an endless supply of solutions that never solve anything &mdash; just quieter versions of the same distraction.</div>
+      </div>
+      <div class="tension-vs">VS</div>
+      <div class="tension-box">
+        <div class="tension-box-title">The Stillness</div>
+        <div class="tension-box-text">The way back. A space where breath reclaims center, cold expands, heat releases, and stillness lets you find yourself again. The space does its work, then gets out of the way. What remains is you.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOICE & LANGUAGE -->
+  <section class="section" id="voice" data-noah-section>
+    <div class="section-glow glow-orange" style="width:450px;height:400px;top:100px;left:-150px"></div>
+    <div class="section-glow glow-water-strong" style="width:400px;height:350px;bottom:50px;right:-120px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">04 &mdash; Voice &amp; Language</span>
+      <h2 class="sec-title">How We Speak</h2>
+      <p class="sec-desc">The brand voice emerges from the manifesto &mdash; direct without preaching, warm without soft, certain without arrogant. It speaks to someone who already knows the noise. It doesn't explain. It names. It lands.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="voice-split fade-in">
+      <div class="voice-col">
+        <div class="voice-col-title yes">We Say</div>
+        <div class="voice-words">
+          <span class="voice-chip">Stillness</span>
+          <span class="voice-chip">The way back</span>
+          <span class="voice-chip">Return to yourself</span>
+          <span class="voice-chip">Everything is inside</span>
+          <span class="voice-chip">Presence</span>
+          <span class="voice-chip">Capacity</span>
+          <span class="voice-chip">Resilience</span>
+          <span class="voice-chip">Fully anchored</span>
+          <span class="voice-chip">Self-regulated</span>
+          <span class="voice-chip">The space does its work</span>
+        </div>
+      </div>
+      <div class="voice-divider"></div>
+      <div class="voice-col">
+        <div class="voice-col-title no">We Never Say</div>
+        <div class="voice-words">
+          <span class="voice-chip">Self-care</span>
+          <span class="voice-chip">Wellness journey</span>
+          <span class="voice-chip">Detox</span>
+          <span class="voice-chip">Mindfulness</span>
+          <span class="voice-chip">Zen</span>
+          <span class="voice-chip">Healing vibes</span>
+          <span class="voice-chip">Find your bliss</span>
+          <span class="voice-chip">Guru / Teacher</span>
+          <span class="voice-chip">Fix / Cure / Heal</span>
+          <span class="voice-chip">Transform your life</span>
+        </div>
+      </div>
+    </div>
+    <div class="voice-beats fade-in">
+      <div class="voice-beat" data-num="01">
+        <div class="voice-beat-name">The Pressure</div>
+        <div class="voice-beat-desc">Name it directly. The pace, the pull. Land it in three words.</div>
+      </div>
+      <div class="voice-beat" data-num="02">
+        <div class="voice-beat-name">The False Solutions</div>
+        <div class="voice-beat-desc">Quieter versions of the same noise. Dismiss without naming.</div>
+      </div>
+      <div class="voice-beat" data-num="03">
+        <div class="voice-beat-name">The Way Back</div>
+        <div class="voice-beat-desc">Breath, cold, heat, stillness. The space does its work.</div>
+      </div>
+      <div class="voice-beat" data-num="04">
+        <div class="voice-beat-name">The Anchor</div>
+        <div class="voice-beat-desc">Presence &rarr; capacity &rarr; resilience. Everything is inside.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRATEGIC FOUNDATION -->
+  <section class="section" id="foundation" data-noah-section>
+    <div class="section-glow glow-water-strong" style="width:500px;height:400px;top:-80px;left:-180px"></div>
+    <div class="section-glow glow-orange" style="width:350px;height:300px;bottom:-60px;right:-120px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">05 &mdash; Strategic Foundation</span>
+      <h2 class="sec-title">Workshop Insights</h2>
+      <p class="sec-desc">Core principles distilled from Phase 1 discovery sessions with the founding team. These insights inform every brand, experience, and operational decision.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="pillar-row fade-in" style="grid-template-columns:repeat(3,1fr);margin-bottom:48px">
+      <div class="pillar-card">
+        <div class="pillar-num">Principle</div>
+        <div class="pillar-name">The Member Is the Hero</div>
+        <div class="pillar-desc">NVRMND is the guide, never the hero. Like Dorothy clicking her heels &mdash; "the power was inside them all along." Every touchpoint reinforces: trust your own experience, not what we tell you.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Principle</div>
+        <div class="pillar-name">All Modalities, One Roof</div>
+        <div class="pillar-desc">Heat, cold, breath, stillness, community &mdash; under one roof in a media-intentional, non-media-driven environment. The unique differentiator no competitor can replicate at this level of curation.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Principle</div>
+        <div class="pillar-name">Accessible to Everyone</div>
+        <div class="pillar-desc">Non-negotiable: always accessible to the first-time visitor. Unlike Aman's exclusivity, NVRMND delivers luxury immersion to anyone ready to walk through the door. The experience earns trust &mdash; the brand doesn't demand it.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Principle</div>
+        <div class="pillar-name">Figure-Ground Play</div>
+        <div class="pillar-desc">The experience begins as "figure" &mdash; music, temperature, stimulation. It slowly transitions until the "ground" (the silence, the stillness) becomes the emphasis. The shift is imperceptible and profound.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Principle</div>
+        <div class="pillar-name">Hospitality as Culture</div>
+        <div class="pillar-desc">Ritz-Carlton's anticipatory service meets Aman's organic surrender. Every team member is empowered, trained, and expected to embody the culture &mdash; greeting members by name, anticipating needs before they arise.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Principle</div>
+        <div class="pillar-name">Community as Catalyst</div>
+        <div class="pillar-desc">Communal experience is more powerful than solo. Members arrive for themselves and discover the group &mdash; people meeting themselves, then seeing community. Pretense falls when they see the commonality among one another. The tribe forms naturally.</div>
+      </div>
+    </div>
+    <div class="fade-in">
+      <span class="sec-eyebrow" style="margin-bottom:24px;display:block">Experience Non-Negotiables</span>
+      <div class="pillar-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="pillar-card">
+          <div class="pillar-num">Non-Negotiable</div>
+          <div class="pillar-name">Reliability</div>
+          <div class="pillar-desc">An undisturbable curated experience &mdash; exactly what we create, every time. Like Starbucks' "third place" or In-N-Out's three items &mdash; the experience never changes. A member in Austin feels the same trust as a member in Newport Beach.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">Non-Negotiable</div>
+          <div class="pillar-name">Sensory Immersion</div>
+          <div class="pillar-desc">The space must feel impossibly vast, extraordinary, and fully immersive. Scent, light, sound, and temperature are all intentional. No chlorine smell. No visible speakers. The source of magic is always hidden.</div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">Non-Negotiable</div>
+          <div class="pillar-name">Return to Self</div>
+          <div class="pillar-desc">NVRMND exists to return people to themselves, not to the company. Everything else can scale. This focus on the self &mdash; from sovereignty to fully anchored autonomy &mdash; is the one thing that can never change.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE INTEGRATED SYSTEM -->
+  <section class="section" id="system" data-noah-section>
+    <div class="section-glow glow-mixed" style="width:600px;height:500px;top:-50px;left:-200px"></div>
+    <div class="section-glow glow-water-strong" style="width:400px;height:350px;bottom:50px;right:-150px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">06 &mdash; The Integrated System</span>
+      <h2 class="sec-title">Brand as System</h2>
+      <p class="sec-desc">Like Apple, NVRMND is not one thing &mdash; it's an integrated system of modalities. Each element reinforces the others. The whole is greater than the sum.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="system-diagram fade-in" style="text-align:center;padding:48px 0">
+      <svg id="systemRingSvg" viewBox="0 0 500 500" width="400" height="400" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+        <defs>
+          <linearGradient id="sysGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgba(196,148,106,0.6)"/>
+            <stop offset="100%" stop-color="rgba(74,124,138,0.6)"/>
+          </linearGradient>
+        </defs>
+        <!-- Outer rings: modalities -->
+        <circle cx="250" cy="250" r="230" stroke="rgba(196,148,106,0.08)" stroke-width="1" class="sys-ring" data-label="Community"/>
+        <circle cx="250" cy="250" r="200" stroke="rgba(196,148,106,0.12)" stroke-width="1.5" class="sys-ring" data-label="Scent"/>
+        <circle cx="250" cy="250" r="170" stroke="rgba(74,124,138,0.15)" stroke-width="1.5" class="sys-ring" data-label="Sound"/>
+        <circle cx="250" cy="250" r="140" stroke="rgba(74,124,138,0.2)" stroke-width="2" class="sys-ring" data-label="Light"/>
+        <circle cx="250" cy="250" r="110" stroke="rgba(196,148,106,0.25)" stroke-width="2" class="sys-ring" data-label="Heat"/>
+        <circle cx="250" cy="250" r="80" stroke="rgba(196,148,106,0.35)" stroke-width="2.5" class="sys-ring" data-label="Cold"/>
+        <circle cx="250" cy="250" r="50" stroke="url(#sysGrad1)" stroke-width="3" class="sys-ring" data-label="Breath"/>
+        <!-- Center: Return to Self -->
+        <circle cx="250" cy="250" r="18" fill="rgba(196,148,106,0.15)"/>
+        <!-- Modality labels -->
+        <text x="250" y="250" text-anchor="middle" dominant-baseline="central" fill="#F5F0EB" font-family="Inter" font-size="7" font-weight="500" letter-spacing="0.2em">RETURN TO SELF</text>
+        <text x="250" y="14" text-anchor="middle" fill="#8A8279" font-family="Inter" font-size="7" font-weight="400" letter-spacing="0.15em">COMMUNITY</text>
+        <text x="250" y="44" text-anchor="middle" fill="#8A8279" font-family="Inter" font-size="7" font-weight="400" letter-spacing="0.15em">SCENT</text>
+        <text x="488" y="250" text-anchor="end" dominant-baseline="central" fill="#8A8279" font-family="Inter" font-size="7" font-weight="400" letter-spacing="0.15em">SOUND</text>
+        <text x="12" y="250" text-anchor="start" dominant-baseline="central" fill="#8A8279" font-family="Inter" font-size="7" font-weight="400" letter-spacing="0.15em">LIGHT</text>
+        <text x="250" y="488" text-anchor="middle" fill="#8A8279" font-family="Inter" font-size="7" font-weight="400" letter-spacing="0.15em">STILLNESS</text>
+        <text x="390" y="120" text-anchor="middle" fill="#C4946A" font-family="Inter" font-size="7" font-weight="500" letter-spacing="0.15em">HEAT</text>
+        <text x="110" y="380" text-anchor="middle" fill="#4A7C8A" font-family="Inter" font-size="7" font-weight="500" letter-spacing="0.15em">COLD</text>
+        <text x="390" y="380" text-anchor="middle" fill="#C4946A" font-family="Inter" font-size="7" font-weight="500" letter-spacing="0.15em">BREATH</text>
+      </svg>
+    </div>
+    <div class="pillar-row fade-in" style="grid-template-columns:repeat(3,1fr)">
+      <div class="pillar-card">
+        <div class="pillar-num">System</div>
+        <div class="pillar-name">Every Sense, One Roof</div>
+        <div class="pillar-desc">Heat, cold, breath, scent, sound, light, community &mdash; all modalities integrated under one roof. Not a menu of services but a unified system designed to produce a single outcome: return to self.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">System</div>
+        <div class="pillar-name">The Container</div>
+        <div class="pillar-desc">A fully immersive sensory experience that seems effortless. The architecture does the heavy lifting &mdash; creating a scalable, high-quality environment where the source of magic is always hidden.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">System</div>
+        <div class="pillar-name">Scalable by Design</div>
+        <div class="pillar-desc">The system, not the guru, delivers the experience. No single person is the brand. An integrated ecosystem where every element reinforces the others. Each location runs the same protocol &mdash; consistent, reliable, infinitely replicable.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLOR PALETTE -->
+  <section class="section" id="palette">
+    <div class="section-glow glow-mixed" style="width:500px;height:400px;top:-50px;right:-200px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">07 &mdash; Color Palette</span>
+      <h2 class="sec-title">Visual Language</h2>
+      <p class="sec-desc">A palette drawn from the threshold between warmth and depth. Copper grounds the brand in earned luxury; Still Water evokes the clarity found in stillness. When used as atmospheric glows &mdash; blurred radial gradients of Copper and Still Water layered behind content &mdash; these colors create the signature sense of light emerging from the void. The blue glow is a core design tool for all NVRMND content.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="color-grid fade-in">
+      <div class="color-card" data-hex="#0A0A0A" data-token="--color-bg">
+        <span class="color-copy-hint">Click to copy</span>
+        <div class="color-swatch" style="background:#0A0A0A;border:1px solid rgba(196,148,106,.08)"></div>
+        <div class="color-name">Void Black</div>
+        <div class="color-hex">#0A0A0A</div>
+        <div class="color-role">Primary background</div>
+        <div class="color-contrast">vs Bone: 15.4:1</div>
+      </div>
+      <div class="color-card" data-hex="#F5F0EB" data-token="--color-text-primary">
+        <span class="color-copy-hint">Click to copy</span>
+        <div class="color-swatch" style="background:#F5F0EB"></div>
+        <div class="color-name">Bone</div>
+        <div class="color-hex">#F5F0EB</div>
+        <div class="color-role">Primary text</div>
+        <div class="color-contrast">vs Void: 15.4:1</div>
+      </div>
+      <div class="color-card" data-hex="#C4946A" data-token="--color-accent-warm">
+        <span class="color-copy-hint">Click to copy</span>
+        <div class="color-swatch" style="background:linear-gradient(135deg,#C4946A,#D4A574)"></div>
+        <div class="color-name">Copper</div>
+        <div class="color-hex">#C4946A</div>
+        <div class="color-role">Accent &amp; emphasis</div>
+        <div class="color-contrast">vs Void: 5.8:1 &bull; vs Bone: 2.7:1</div>
+      </div>
+      <div class="color-card" data-hex="#4A7C8A" data-token="--color-accent-cool">
+        <span class="color-copy-hint">Click to copy</span>
+        <div class="color-swatch" style="background:linear-gradient(135deg,#4A7C8A,#8FBDD0)"></div>
+        <div class="color-name">Still Water</div>
+        <div class="color-hex">#4A7C8A</div>
+        <div class="color-role">Secondary accent</div>
+        <div class="color-contrast">vs Void: 4.2:1 &bull; vs Bone: 3.7:1</div>
+      </div>
+      <div class="color-card" data-hex="#1A1614" data-token="--color-surface">
+        <span class="color-copy-hint">Click to copy</span>
+        <div class="color-swatch" style="background:#1A1614"></div>
+        <div class="color-name">Warm Charcoal</div>
+        <div class="color-hex">#1A1614</div>
+        <div class="color-role">Cards &amp; surfaces</div>
+        <div class="color-contrast">vs Bone: 13.1:1</div>
+      </div>
+      <div class="color-card" data-hex="#8A8279" data-token="--color-text-secondary">
+        <span class="color-copy-hint">Click to copy</span>
+        <div class="color-swatch" style="background:#8A8279"></div>
+        <div class="color-name">Warm Stone</div>
+        <div class="color-hex">#8A8279</div>
+        <div class="color-role">Secondary text</div>
+        <div class="color-contrast">vs Void: 4.5:1</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section class="section" id="typography">
+    <div class="section-glow glow-water" style="width:450px;height:400px;top:-80px;left:-180px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">08 &mdash; Typography</span>
+      <h2 class="sec-title">Type System</h2>
+      <p class="sec-desc">Two typefaces, one voice. Cormorant carries the soul; Inter carries the information. The tension between them mirrors the brand itself &mdash; ancient wisdom, modern precision.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="fade-in">
+      <div class="type-specimen">
+        <div class="type-label">Display &mdash; Cormorant Garamond</div>
+        <div class="type-sample-serif">Everything is inside.</div>
+        <div class="type-sample-serif" style="font-size:clamp(1.2rem,2vw,1.8rem);font-style:italic;color:var(--aw);opacity:.7">The space does its work, then gets out of the way.</div>
+        <div class="type-meta">Weight: 300 Light &bull; Use: Headlines, manifesto, emotional content &bull; Tracking: +0.02em</div>
+      </div>
+      <div class="type-specimen">
+        <div class="type-label">Body &mdash; Inter</div>
+        <div class="type-sample-sans">Breath to reclaim center. Cold to expand. Heat to release. Stillness to find yourself again. Presence builds capacity. Capacity builds resilience. Resilience changes everything.</div>
+        <div class="type-meta">Weights: 300, 400, 500, 600 &bull; Use: Body, UI, navigation, captions &bull; Tracking: standard</div>
+      </div>
+      <div class="type-playground fade-in" id="typePlayground">
+        <div class="type-playground-title">Live Type Playground</div>
+        <div class="type-font-toggle">
+          <button class="type-font-btn active" data-font="serif">Cormorant Garamond</button>
+          <button class="type-font-btn" data-font="sans">Inter</button>
+        </div>
+        <div class="type-controls">
+          <div class="type-control">
+            <label>Size</label>
+            <input type="range" id="typeSize" min="12" max="72" value="32">
+            <span class="control-value" id="typeSizeVal">32px</span>
+          </div>
+          <div class="type-control">
+            <label>Weight</label>
+            <input type="range" id="typeWeight" min="300" max="600" step="100" value="300">
+            <span class="control-value" id="typeWeightVal">300</span>
+          </div>
+          <div class="type-control">
+            <label>Line Height</label>
+            <input type="range" id="typeLeading" min="100" max="250" value="170">
+            <span class="control-value" id="typeLeadingVal">1.7</span>
+          </div>
+          <div class="type-control">
+            <label>Tracking</label>
+            <input type="range" id="typeTracking" min="0" max="50" value="2">
+            <span class="control-value" id="typeTrackingVal">0.02em</span>
+          </div>
+        </div>
+        <div class="type-preview-area">
+          <div class="type-preview-text" id="typePreview" style="font-family:var(--se);font-size:32px;font-weight:300;line-height:1.7;letter-spacing:0.02em;color:var(--tp)">Everything is inside.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRAPHIC ELEMENTS LIBRARY -->
+  <section class="section gel-section" id="elements">
+    <div class="section-glow glow-warm" style="width:600px;height:500px;top:-200px;left:-250px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">09 &mdash; Graphic Elements</span>
+      <h2 class="sec-title">Visual Library</h2>
+      <p class="sec-desc">The complete set of graphic elements available for brand applications. Each element is built from the core visual language &mdash; concentric rings, gradient arcs, and flowing forms.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="gel-grid fade-in">
+
+      <!-- ROW: CONCENTRIC RINGS -->
+      <div class="gel-row-label">Concentric Rings</div>
+
+      <!-- Multi-ring (mixed gradient) -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 160" width="140" height="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelCR3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.85)"/>
+              <stop offset="25%" stop-color="rgba(196,148,106,0.08)"/>
+              <stop offset="50%" stop-color="rgba(143,189,208,0.75)"/>
+              <stop offset="75%" stop-color="rgba(123,167,188,0.08)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.85)"/>
+            </linearGradient>
+          </defs>
+          <circle cx="80" cy="80" r="70" stroke="url(#gelCR3)" stroke-width="1.5" opacity=".9"/>
+          <circle cx="80" cy="80" r="52" stroke="url(#gelCR3)" stroke-width="1.2" opacity=".65"/>
+          <circle cx="80" cy="80" r="34" stroke="url(#gelCR3)" stroke-width="1" opacity=".4"/>
+        </svg>
+        <div class="gel-cell-label">Multi-Ring &mdash; Mixed</div>
+      </div>
+
+      <!-- Single thick ring with glow -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 160" width="140" height="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelCR4" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.8)"/>
+              <stop offset="50%" stop-color="rgba(74,124,138,0.6)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.8)"/>
+            </linearGradient>
+            <filter id="gelGlow1">
+              <feGaussianBlur stdDeviation="6" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <circle cx="80" cy="80" r="58" stroke="url(#gelCR4)" stroke-width="3" filter="url(#gelGlow1)" opacity=".85"/>
+        </svg>
+        <div class="gel-cell-label">Single Ring &mdash; Glow</div>
+      </div>
+
+      <!-- ROW: ARCS & HALF-RINGS -->
+      <div class="gel-row-label">Arcs &amp; Half-Rings</div>
+
+      <!-- Top arc, copper -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 100" width="140" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelArc1" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.05)"/>
+              <stop offset="50%" stop-color="rgba(212,165,116,0.9)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.05)"/>
+            </linearGradient>
+            <filter id="gelGlowArc1"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path d="M 10,90 A 70,70 0 0 1 150,90" stroke="url(#gelArc1)" stroke-width="2" stroke-linecap="round" filter="url(#gelGlowArc1)"/>
+          <path d="M 25,90 A 55,55 0 0 1 135,90" stroke="url(#gelArc1)" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+          <path d="M 40,90 A 40,40 0 0 1 120,90" stroke="url(#gelArc1)" stroke-width="1" stroke-linecap="round" opacity=".25"/>
+        </svg>
+        <div class="gel-cell-label">Triple Arc &mdash; Copper</div>
+      </div>
+
+      <!-- Top arc, still water -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 100" width="140" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelArc2" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stop-color="rgba(143,189,208,0.05)"/>
+              <stop offset="50%" stop-color="rgba(143,189,208,0.9)"/>
+              <stop offset="100%" stop-color="rgba(143,189,208,0.05)"/>
+            </linearGradient>
+            <filter id="gelGlowArc2"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path d="M 10,90 A 70,70 0 0 1 150,90" stroke="url(#gelArc2)" stroke-width="2" stroke-linecap="round" filter="url(#gelGlowArc2)"/>
+          <path d="M 25,90 A 55,55 0 0 1 135,90" stroke="url(#gelArc2)" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+          <path d="M 40,90 A 40,40 0 0 1 120,90" stroke="url(#gelArc2)" stroke-width="1" stroke-linecap="round" opacity=".25"/>
+        </svg>
+        <div class="gel-cell-label">Triple Arc &mdash; Still Water</div>
+      </div>
+
+      <!-- Half ring with glow, mixed gradient -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 100" width="140" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelArc3" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.8)"/>
+              <stop offset="50%" stop-color="rgba(143,189,208,0.7)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.8)"/>
+            </linearGradient>
+            <filter id="gelGlowArc3"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path d="M 10,92 A 70,70 0 0 1 150,92" stroke="url(#gelArc3)" stroke-width="3.5" stroke-linecap="round" filter="url(#gelGlowArc3)"/>
+        </svg>
+        <div class="gel-cell-label">Half-Ring &mdash; Glow</div>
+      </div>
+
+      <!-- Nested arcs, alternating -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 100" width="140" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 10,90 A 70,70 0 0 1 150,90" stroke="rgba(212,165,116,.7)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M 20,90 A 60,60 0 0 1 140,90" stroke="rgba(143,189,208,.5)" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M 30,90 A 50,50 0 0 1 130,90" stroke="rgba(212,165,116,.35)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 40,90 A 40,40 0 0 1 120,90" stroke="rgba(143,189,208,.2)" stroke-width=".8" stroke-linecap="round"/>
+        </svg>
+        <div class="gel-cell-label">Nested Arcs &mdash; Alternating</div>
+      </div>
+
+      <!-- ROW: WAVE & FLOW ELEMENTS -->
+      <div class="gel-row-label">Wave &amp; Flow Elements</div>
+
+      <!-- Thick S-curve, copper -->
+      <div class="gel-cell gel-cell--wide">
+        <svg viewBox="0 0 280 100" width="260" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelWv1" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.05)"/>
+              <stop offset="30%" stop-color="rgba(212,165,116,0.8)"/>
+              <stop offset="70%" stop-color="rgba(196,148,106,0.6)"/>
+              <stop offset="100%" stop-color="rgba(196,148,106,0.05)"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0,70 C 50,70 50,30 100,30 C 150,30 150,70 200,70 C 250,70 250,30 280,30" stroke="url(#gelWv1)" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <div class="gel-cell-label">S-Curve &mdash; Copper</div>
+      </div>
+
+      <!-- Thick S-curve, still water -->
+      <div class="gel-cell gel-cell--wide">
+        <svg viewBox="0 0 280 100" width="260" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelWv2" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stop-color="rgba(143,189,208,0.05)"/>
+              <stop offset="30%" stop-color="rgba(143,189,208,0.8)"/>
+              <stop offset="70%" stop-color="rgba(74,124,138,0.6)"/>
+              <stop offset="100%" stop-color="rgba(74,124,138,0.05)"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0,70 C 50,70 50,30 100,30 C 150,30 150,70 200,70 C 250,70 250,30 280,30" stroke="url(#gelWv2)" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <div class="gel-cell-label">S-Curve &mdash; Still Water</div>
+      </div>
+
+      <!-- Thin flowing wave lines -->
+      <div class="gel-cell gel-cell--wide">
+        <svg viewBox="0 0 280 80" width="260" height="72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 0,20 C 40,10 80,35 120,25 C 160,15 200,40 240,30 C 260,25 270,20 280,22" stroke="rgba(212,165,116,.6)" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M 0,38 C 40,28 80,52 120,42 C 160,32 200,56 240,46 C 260,41 270,38 280,40" stroke="rgba(196,148,106,.35)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M 0,55 C 40,45 80,68 120,58 C 160,48 200,72 240,62 C 260,57 270,55 280,57" stroke="rgba(143,189,208,.4)" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+        <div class="gel-cell-label">Flowing Lines &mdash; Triple</div>
+      </div>
+
+      <!-- Mixed gradient wave -->
+      <div class="gel-cell gel-cell--wide">
+        <svg viewBox="0 0 280 100" width="260" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelWv3" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.7)"/>
+              <stop offset="50%" stop-color="rgba(143,189,208,0.7)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.7)"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0,65 C 45,65 45,35 90,35 C 135,35 135,65 180,65 C 225,65 225,35 280,35" stroke="url(#gelWv3)" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <div class="gel-cell-label">S-Curve &mdash; Mixed Gradient</div>
+      </div>
+
+      <!-- ROW: LOGO TREATMENTS -->
+      <div class="gel-row-label">Logo Ring Treatments</div>
+
+      <!-- Logo + copper ring -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 160" width="130" height="130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelLR1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.8)"/>
+              <stop offset="50%" stop-color="rgba(196,148,106,0.1)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.8)"/>
+            </linearGradient>
+          </defs>
+          <circle cx="80" cy="80" r="65" stroke="url(#gelLR1)" stroke-width="1.5"/>
+          <text x="80" y="84" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="13" font-weight="300" letter-spacing="4.5" fill="rgba(245,240,235,.9)">NVRMND</text>
+        </svg>
+        <div class="gel-cell-label">Logo &mdash; Copper Ring</div>
+      </div>
+
+      <!-- Logo + still water ring -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 160" width="130" height="130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelLR2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(143,189,208,0.8)"/>
+              <stop offset="50%" stop-color="rgba(74,124,138,0.1)"/>
+              <stop offset="100%" stop-color="rgba(143,189,208,0.8)"/>
+            </linearGradient>
+            <filter id="gelGlowL2"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <circle cx="80" cy="80" r="65" stroke="url(#gelLR2)" stroke-width="1.5" filter="url(#gelGlowL2)"/>
+          <text x="80" y="84" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="13" font-weight="300" letter-spacing="4.5" fill="rgba(245,240,235,.9)">NVRMND</text>
+        </svg>
+        <div class="gel-cell-label">Logo &mdash; Water Glow</div>
+      </div>
+
+      <!-- Logo + mixed gradient ring -->
+      <div class="gel-cell">
+        <svg viewBox="0 0 160 160" width="130" height="130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelLR3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.8)"/>
+              <stop offset="25%" stop-color="rgba(196,148,106,0.06)"/>
+              <stop offset="50%" stop-color="rgba(143,189,208,0.7)"/>
+              <stop offset="75%" stop-color="rgba(123,167,188,0.06)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.8)"/>
+            </linearGradient>
+            <filter id="gelGlowL3"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <circle cx="80" cy="80" r="65" stroke="url(#gelLR3)" stroke-width="2" filter="url(#gelGlowL3)"/>
+          <circle cx="80" cy="80" r="56" stroke="url(#gelLR3)" stroke-width="1" opacity=".3"/>
+          <text x="80" y="84" text-anchor="middle" font-family="Inter,-apple-system,sans-serif" font-size="13" font-weight="300" letter-spacing="4.5" fill="rgba(245,240,235,.9)">NVRMND</text>
+        </svg>
+        <div class="gel-cell-label">Logo &mdash; Mixed Double</div>
+      </div>
+
+      <!-- ROW: PATTERN / TEXTURE -->
+      <div class="gel-row-label">Patterns &amp; Textures</div>
+
+      <!-- Repeating concentric circle pattern -->
+      <div class="gel-cell gel-cell--wide">
+        <svg viewBox="0 0 240 160" width="220" height="148" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gelPat1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.4)"/>
+              <stop offset="50%" stop-color="rgba(143,189,208,0.3)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0.4)"/>
+            </linearGradient>
+          </defs>
+          <!-- Row 1 -->
+          <circle cx="40" cy="40" r="30" stroke="url(#gelPat1)" stroke-width=".6" opacity=".5"/>
+          <circle cx="40" cy="40" r="22" stroke="url(#gelPat1)" stroke-width=".5" opacity=".35"/>
+          <circle cx="40" cy="40" r="14" stroke="url(#gelPat1)" stroke-width=".4" opacity=".2"/>
+          <circle cx="120" cy="40" r="30" stroke="url(#gelPat1)" stroke-width=".6" opacity=".5"/>
+          <circle cx="120" cy="40" r="22" stroke="url(#gelPat1)" stroke-width=".5" opacity=".35"/>
+          <circle cx="120" cy="40" r="14" stroke="url(#gelPat1)" stroke-width=".4" opacity=".2"/>
+          <circle cx="200" cy="40" r="30" stroke="url(#gelPat1)" stroke-width=".6" opacity=".5"/>
+          <circle cx="200" cy="40" r="22" stroke="url(#gelPat1)" stroke-width=".5" opacity=".35"/>
+          <circle cx="200" cy="40" r="14" stroke="url(#gelPat1)" stroke-width=".4" opacity=".2"/>
+          <!-- Row 2 (offset) -->
+          <circle cx="80" cy="100" r="30" stroke="url(#gelPat1)" stroke-width=".6" opacity=".4"/>
+          <circle cx="80" cy="100" r="22" stroke="url(#gelPat1)" stroke-width=".5" opacity=".28"/>
+          <circle cx="80" cy="100" r="14" stroke="url(#gelPat1)" stroke-width=".4" opacity=".16"/>
+          <circle cx="160" cy="100" r="30" stroke="url(#gelPat1)" stroke-width=".6" opacity=".4"/>
+          <circle cx="160" cy="100" r="22" stroke="url(#gelPat1)" stroke-width=".5" opacity=".28"/>
+          <circle cx="160" cy="100" r="14" stroke="url(#gelPat1)" stroke-width=".4" opacity=".16"/>
+        </svg>
+        <div class="gel-cell-label">Repeating Rings &mdash; Tile Pattern</div>
+      </div>
+
+      <!-- Ring color swatches row -->
+      <div class="gel-cell gel-cell--wide">
+        <svg viewBox="0 0 280 80" width="260" height="72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Small copper rings -->
+          <circle cx="30" cy="40" r="24" stroke="rgba(212,165,116,.7)" stroke-width="2.5"/>
+          <circle cx="30" cy="40" r="16" stroke="rgba(212,165,116,.4)" stroke-width="1.5"/>
+          <!-- Small water rings -->
+          <circle cx="100" cy="40" r="24" stroke="rgba(143,189,208,.7)" stroke-width="2.5"/>
+          <circle cx="100" cy="40" r="16" stroke="rgba(143,189,208,.4)" stroke-width="1.5"/>
+          <!-- Small mixed rings -->
+          <defs>
+            <linearGradient id="gelSm1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(212,165,116,.7)"/>
+              <stop offset="100%" stop-color="rgba(143,189,208,.7)"/>
+            </linearGradient>
+          </defs>
+          <circle cx="170" cy="40" r="24" stroke="url(#gelSm1)" stroke-width="2.5"/>
+          <circle cx="170" cy="40" r="16" stroke="url(#gelSm1)" stroke-width="1.5"/>
+          <!-- Small thick ring -->
+          <circle cx="240" cy="40" r="24" stroke="rgba(212,165,116,.5)" stroke-width="5"/>
+        </svg>
+        <div class="gel-cell-label">Ring Variants &mdash; Small Scale</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PHOTOGRAPHY -->
+  <section class="section" id="photography">
+    <div class="section-glow glow-mixed" style="width:500px;height:400px;top:0;right:-250px"></div>
+    <div class="section-glow glow-water-strong" style="width:350px;height:300px;bottom:-60px;left:-100px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">10 &mdash; Photography</span>
+      <h2 class="sec-title">Visual Storytelling</h2>
+      <p class="sec-desc">Photography should feel like the moment between breaths. Never posed, never performative. The human figure is present but never the hero &mdash; the space is.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="photo-principles fade-in">
+      <div class="photo-card"><div class="photo-name">Environment First</div><div class="photo-desc">Lead with architecture, light, and texture. The space tells the story. Human subjects occupy no more than 30% of the frame, always in mid-experience, never performing for camera.</div></div>
+      <div class="photo-card"><div class="photo-name">Light as Character</div><div class="photo-desc">Natural or amber-warm artificial. No flash. No clinical whites. Light should feel like it's arriving, not illuminating. Shadows are equally important &mdash; they create the container.</div></div>
+      <div class="photo-card"><div class="photo-name">Textural Intimacy</div><div class="photo-desc">Close-up details: water on stone, steam rising, wood grain, copper patina. These macro moments communicate quality without showing faces or logos.</div></div>
+      <div class="photo-card"><div class="photo-name">No Aspirational Fiction</div><div class="photo-desc">Never staged smiles. Never "lifestyle" poses. If a person appears, they are genuinely in the experience &mdash; eyes closed, body in motion, or completely still. Authenticity is non-negotiable.</div></div>
+    </div>
+  </section>
+
+  <!-- DESIGN TOKENS -->
+  <section class="section" id="tokens">
+    <div class="section-glow glow-water-strong" style="width:500px;height:400px;bottom:-100px;right:-200px"></div>
+    <div class="fade-in">
+      <span class="sec-eyebrow">11 &mdash; Design Tokens</span>
+      <h2 class="sec-title">System Reference</h2>
+      <p class="sec-desc">The atomic values that power every NVRMND digital surface. These tokens ensure consistency across all platforms and touchpoints.</p>
+      <div class="sec-rule"></div>
+    </div>
+    <div class="token-grid fade-in" id="tokenGrid">
+      <div class="token-group-label">Color</div>
+      <div class="token-cell" data-token="--color-bg: #0A0A0A"><div class="token-name">--color-bg</div><div class="token-val">#0A0A0A</div><div class="token-use">Primary background</div></div>
+      <div class="token-cell" data-token="--color-surface: #1A1614"><div class="token-name">--color-surface</div><div class="token-val">#1A1614</div><div class="token-use">Cards, elevated surfaces</div></div>
+      <div class="token-cell" data-token="--color-text-primary: #F5F0EB"><div class="token-name">--color-text-primary</div><div class="token-val">#F5F0EB</div><div class="token-use">Headlines, body</div></div>
+      <div class="token-cell" data-token="--color-accent-warm: #C4946A"><div class="token-name">--color-accent-warm</div><div class="token-val">#C4946A</div><div class="token-use">CTAs, copper accents</div></div>
+      <div class="token-cell" data-token="--color-accent-cool: #4A7C8A"><div class="token-name">--color-accent-cool</div><div class="token-val">#4A7C8A</div><div class="token-use">Still Water accent</div></div>
+      <div class="token-cell" data-token="--color-accent-gold: #D4A574"><div class="token-name">--color-accent-gold</div><div class="token-val">#D4A574</div><div class="token-use">Ring highlights</div></div>
+      <div class="token-group-label">Typography & Spacing</div>
+      <div class="token-cell" data-token="--font-display: 'Cormorant Garamond', serif"><div class="token-name">--font-display</div><div class="token-val">Cormorant Garamond 300</div><div class="token-use">Headlines, manifesto</div></div>
+      <div class="token-cell" data-token="--font-body: 'Inter', sans-serif"><div class="token-name">--font-body</div><div class="token-val">Inter 300&ndash;600</div><div class="token-use">Body, UI, wordmark</div></div>
+      <div class="token-cell" data-token="--spacing-section: 120px"><div class="token-name">--spacing-section</div><div class="token-val">120px</div><div class="token-use">Between sections</div></div>
+      <div class="token-group-label">Motion & Surface</div>
+      <div class="token-cell" data-token="--transition-default: 0.35s cubic-bezier(.4,0,.2,1)"><div class="token-name">--transition-default</div><div class="token-val">0.35s ease</div><div class="token-use">Standard interactions</div></div>
+      <div class="token-cell" data-token="--transition-slow: 0.8s cubic-bezier(.4,0,.2,1)"><div class="token-name">--transition-slow</div><div class="token-val">0.8s ease</div><div class="token-use">Section reveals</div></div>
+      <div class="token-cell" data-token="--radius-card: 0px"><div class="token-name">--radius-card</div><div class="token-val">0px</div><div class="token-use">Sharp edges, no rounding</div></div>
+    </div>
+    <button class="token-copy-all fade-in" id="tokenCopyAll">Copy All Tokens as CSS</button>
+  </section>
+
+
+  <!-- FOOTER WAVES -->
+  <div class="footer-waves">
+    <svg class="footer-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C240,10 480,70 720,40 C960,10 1200,70 1440,40" stroke="rgba(196,148,106,0.12)" style="animation:waveShift1 8s ease-in-out infinite"/>
+      <path d="M0,50 C240,20 480,80 720,50 C960,20 1200,80 1440,50" stroke="rgba(74,124,138,0.10)" style="animation:waveShift2 11s ease-in-out infinite"/>
+      <path d="M0,35 C240,55 480,15 720,35 C960,55 1200,15 1440,35" stroke="rgba(196,148,106,0.06)" style="animation:waveShift3 6s ease-in-out infinite"/>
+    </svg>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="guide-footer">
+    <div class="footer-logo">NVRMND</div>
+    <div class="footer-sub">Brand Center &mdash; Version 3.0 &mdash; March 2026 &mdash; Confidential</div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+<script>
+// ─── LENIS SMOOTH SCROLL ───
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+  touchMultiplier: 1.5,
+});
+gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+// ─── REDUCED MOTION CHECK ───
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (prefersReducedMotion) {
+  lenis.destroy();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+
+  // === PARTICLE SYSTEM ===
+  const container=document.getElementById('particlesContainer');
+  function spawnParticle(){
+    if(!container) return;
+    const p=document.createElement('div');
+    p.className='particle';
+    const size=1.5+Math.random()*3;
+    const isWarm=Math.random()>0.45;
+    const cs=getComputedStyle(document.body);
+    const colorBase=isWarm?cs.getPropertyValue('--particle-warm').trim():cs.getPropertyValue('--particle-cool').trim();
+    const brightness=0.12+Math.random()*0.3;
+    const xPos=3+Math.random()*94;
+    const drift=(Math.random()-0.5)*80;
+    const duration=10+Math.random()*14;
+    const delay=Math.random()*duration;
+    p.style.cssText=`
+      width:${size}px;height:${size}px;
+      left:${xPos}%;top:-20px;
+      background:rgba(${colorBase},${brightness});
+      box-shadow:0 0 ${4+Math.random()*8}px rgba(${colorBase},0.2);
+      --p-o:${brightness};--p-drift:${drift}px;
+      animation:floatDown ${duration}s linear ${delay}s infinite;
+    `;
+    container.appendChild(p);
+  }
+  for(let i=0;i<45;i++)spawnParticle();
+
+  // === SIDEBAR TOGGLE SYSTEM ===
+  const sidebar=document.getElementById('sidebarNav');
+  const sidebarBtn=document.getElementById('sidebarToggle');
+  const overlay=document.getElementById('sidebarOverlay');
+  const body=document.body;
+  let sidebarOpen=true;
+
+  function isOverlayMode(){return window.innerWidth<=768}
+
+  function openSidebar(){
+    sidebarOpen=true;
+    sidebar.classList.remove('collapsed');
+    sidebarBtn.classList.add('active');
+    if(isOverlayMode()){
+      overlay.classList.add('visible');
+      body.classList.add('sidebar-hidden');
+    }else{
+      body.classList.remove('sidebar-hidden');
+      overlay.classList.remove('visible');
+    }
+  }
+
+  function closeSidebar(){
+    sidebarOpen=false;
+    sidebar.classList.add('collapsed');
+    sidebarBtn.classList.remove('active');
+    body.classList.add('sidebar-hidden');
+    overlay.classList.remove('visible');
+  }
+
+  function toggleSidebar(){
+    if(sidebarOpen) closeSidebar(); else openSidebar();
+  }
+
+  sidebarBtn.addEventListener('click',toggleSidebar);
+  overlay.addEventListener('click',closeSidebar);
+
+  let lastWidth=window.innerWidth;
+  function handleResize(){
+    const w=window.innerWidth;
+    if(w<=768){
+      body.classList.add('sidebar-hidden');
+      if(sidebarOpen) overlay.classList.add('visible');
+    }else{
+      overlay.classList.remove('visible');
+      if(sidebarOpen) body.classList.remove('sidebar-hidden');
+    }
+    lastWidth=w;
+  }
+
+  if(isOverlayMode()){
+    closeSidebar();
+  }else{
+    openSidebar();
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(handleResize,100);
+  });
+
+  document.querySelectorAll('.nav-link[data-target]').forEach(link=>{
+    link.addEventListener('click',()=>{
+      if(isOverlayMode()) closeSidebar();
+    });
+  });
+
+  // === PRESENTER TOGGLE ===
+  const toggle=document.getElementById('presenterToggle');
+  toggle.addEventListener('click',()=>{
+    toggle.classList.toggle('active');
+    body.classList.toggle('presenter-mode');
+  });
+
+  // === THEME TOGGLE (Light/Dark) ===
+  const themeToggle=document.getElementById('themeToggle');
+  const themeLabel=themeToggle.querySelector('.theme-toggle-label');
+  themeToggle.addEventListener('click',()=>{
+    const isLight=body.classList.toggle('theme-light');
+    themeLabel.textContent=isLight?'Dark':'Light';
+    // Re-create particles with updated colors
+    if(container){
+      container.innerHTML='';
+      for(let i=0;i<45;i++) spawnParticle();
+    }
+  });
+
+  // === SIDEBAR SCROLL SPY (Lenis-powered) ===
+  const sections=document.querySelectorAll('.section[id]');
+  const navLinks=document.querySelectorAll('.nav-link[data-target]');
+
+  function updateScrollSpy(){
+    const scrollY=window.scrollY;
+    const viewportH=window.innerHeight;
+    const triggerPoint=scrollY+viewportH*0.35;
+    let currentId='';
+    sections.forEach(s=>{
+      if(s.offsetTop<=triggerPoint) currentId=s.id;
+    });
+    if(currentId){
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const active=document.querySelector(`.nav-link[data-target="${currentId}"]`);
+      if(active)active.classList.add('active');
+    }
+  }
+  lenis.on('scroll',updateScrollSpy);
+
+  // === SMOOTH SCROLL NAV (Lenis-powered) ===
+  navLinks.forEach(link=>{
+    link.addEventListener('click',e=>{
+      e.preventDefault();
+      const target=document.getElementById(link.dataset.target);
+      if(target) lenis.scrollTo(target,{offset:0,duration:1.2});
+    });
+  });
+
+  // === ALL ELEMENTS VISIBLE (scroll animations removed) ===
+  // Ensure all elements that previously relied on scroll-triggered reveals are visible
+  document.querySelectorAll('.fade-in,.manifesto-opener,.manifesto-body,.manifesto-header,.manifesto-closer,.manifesto-cell,.manifesto-span,.tension-box,.tension-vs,.color-swatch,.story-bar-fill').forEach(el=>{
+    el.style.opacity='1';
+    el.style.transform='none';
+    el.style.clipPath='none';
+  });
+  document.querySelectorAll('.story-bar-fill').forEach(bar=>{bar.style.width='100%';});
+  document.querySelectorAll('.sys-ring').forEach(ring=>{ring.style.strokeDashoffset='0';});
+
+  // === HERO RING HOVER TILT (desktop only) ===
+  const heroRing=document.getElementById('heroRingWrap');
+  const hero=document.querySelector('.hero');
+  const heroCenter=document.querySelector('.hero-center');
+  if(hero&&heroCenter){
+    hero.addEventListener('mousemove',e=>{
+      if(window.innerWidth<768)return;
+      const rect=hero.getBoundingClientRect();
+      const cx=(e.clientX-rect.left)/rect.width-0.5;
+      const cy=(e.clientY-rect.top)/rect.height-0.5;
+      if(heroRing)heroRing.style.transform=`rotateX(${cy*-15}deg) rotateY(${cx*15}deg)`;
+    });
+    hero.addEventListener('mouseleave',()=>{
+      if(heroRing)heroRing.style.transform='rotateX(0deg) rotateY(0deg)';
+    });
+  }
+
+  // === KEYBOARD: Escape closes sidebar ===
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&sidebarOpen) closeSidebar();
+  });
+
+  // === COPY TOAST UTILITY ===
+  const toast=document.getElementById('copyToast');
+  function showToast(msg){
+    toast.textContent=msg||'Copied';
+    gsap.killTweensOf(toast);
+    gsap.fromTo(toast,{opacity:0,y:20},{opacity:1,y:0,duration:0.3,ease:'power2.out'});
+    gsap.to(toast,{opacity:0,y:20,duration:0.3,ease:'power2.in',delay:1.2});
+  }
+
+  function copyText(text,msg){
+    navigator.clipboard.writeText(text).then(()=>showToast(msg));
+  }
+
+  // === COLOR PALETTE CLICK-TO-COPY ===
+  document.querySelectorAll('.color-card[data-hex]').forEach(card=>{
+    card.addEventListener('click',e=>{
+      const hex=card.dataset.hex;
+      const token=card.dataset.token;
+      // Alt/Option+click copies token name
+      if(e.altKey&&token){
+        copyText(token,'Copied: '+token);
+      }else{
+        copyText(hex,'Copied: '+hex);
+      }
+    });
+  });
+
+  // === TYPOGRAPHY PLAYGROUND ===
+  (function initTypePlayground(){
+    const preview=document.getElementById('typePreview');
+    const sizeSlider=document.getElementById('typeSize');
+    const weightSlider=document.getElementById('typeWeight');
+    const leadingSlider=document.getElementById('typeLeading');
+    const trackingSlider=document.getElementById('typeTracking');
+    const sizeVal=document.getElementById('typeSizeVal');
+    const weightVal=document.getElementById('typeWeightVal');
+    const leadingVal=document.getElementById('typeLeadingVal');
+    const trackingVal=document.getElementById('typeTrackingVal');
+    if(!preview) return;
+
+    let currentFont='serif';
+
+    function updatePreview(){
+      const size=sizeSlider.value;
+      const weight=weightSlider.value;
+      const leading=(leadingSlider.value/100).toFixed(1);
+      const tracking=(trackingSlider.value/100).toFixed(2);
+      preview.style.fontSize=size+'px';
+      preview.style.fontWeight=weight;
+      preview.style.lineHeight=leading;
+      preview.style.letterSpacing=tracking+'em';
+      preview.style.fontFamily=currentFont==='serif'?'var(--se)':'var(--sa)';
+      sizeVal.textContent=size+'px';
+      weightVal.textContent=weight;
+      leadingVal.textContent=leading;
+      trackingVal.textContent=tracking+'em';
+    }
+
+    [sizeSlider,weightSlider,leadingSlider,trackingSlider].forEach(s=>{
+      s.addEventListener('input',updatePreview);
+    });
+
+    document.querySelectorAll('.type-font-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.type-font-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFont=btn.dataset.font;
+        updatePreview();
+      });
+    });
+  })();
+
+  // === TOKEN GRID CLICK-TO-COPY ===
+  document.querySelectorAll('.token-cell').forEach(cell=>{
+    cell.addEventListener('click',()=>{
+      const token=cell.dataset.token;
+      if(token) copyText(token,token.split(':')[0]+' copied');
+    });
+  });
+
+  // Copy All Tokens
+  const copyAllBtn=document.getElementById('tokenCopyAll');
+  if(copyAllBtn){
+    copyAllBtn.addEventListener('click',()=>{
+      const cells=document.querySelectorAll('.token-cell');
+      let css=':root {\n';
+      cells.forEach(c=>{
+        if(c.dataset.token) css+='  '+c.dataset.token+';\n';
+      });
+      css+='}';
+      copyText(css,'All tokens copied as CSS');
+    });
+  }
+
+  // === SIDEBAR SCROLL PROGRESS ===
+  const progressBar=document.getElementById('sidebarProgress');
+  if(progressBar){
+    lenis.on('scroll',()=>{
+      const scrollH=document.documentElement.scrollHeight-window.innerHeight;
+      const pct=Math.min(100,Math.max(0,(window.scrollY/scrollH)*100));
+      progressBar.style.height=pct+'%';
+    });
+  }
+
+  // === KEYBOARD NAVIGATION ===
+  const sectionIds=['manifesto','pillars','tension','voice','foundation','system','palette','typography','elements','photography','tokens'];
+  document.addEventListener('keydown',e=>{
+    // Skip if focused on input
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+
+    // Number keys 1-9: jump to section
+    const num=parseInt(e.key);
+    if(num>=1&&num<=9&&num<=sectionIds.length){
+      e.preventDefault();
+      const target=document.getElementById(sectionIds[num-1]);
+      if(target) lenis.scrollTo(target,{offset:-60,duration:1.2});
+      return;
+    }
+    if(e.key==='0'&&sectionIds.length>=10){
+      e.preventDefault();
+      const target=document.getElementById(sectionIds[9]);
+      if(target) lenis.scrollTo(target,{offset:-60,duration:1.2});
+      return;
+    }
+
+    // Arrow keys: prev/next section
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();
+      const scrollY=window.scrollY;
+      const viewportH=window.innerHeight;
+      const triggerPoint=scrollY+viewportH*0.35;
+      let currentIdx=-1;
+      sectionIds.forEach((id,i)=>{
+        const el=document.getElementById(id);
+        if(el&&el.offsetTop<=triggerPoint) currentIdx=i;
+      });
+      const nextIdx=e.key==='ArrowDown'?Math.min(currentIdx+1,sectionIds.length-1):Math.max(currentIdx-1,0);
+      const target=document.getElementById(sectionIds[nextIdx]);
+      if(target) lenis.scrollTo(target,{offset:-60,duration:0.8});
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>
